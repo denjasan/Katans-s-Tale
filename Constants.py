@@ -1,0 +1,17 @@
+SIZE = WIDTH, HEIGHT = 800, 600
+
+RIGHT = 0
+LEFT = 1
+
+ALIVE = 0
+ATTACK = 1
+BATTLE = 2
+DEAD = 3
+
+START_X = 0
+START_Y = 0
+
+MAX_HP = 20
+
+
+
