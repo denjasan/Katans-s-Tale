@@ -3,6 +3,7 @@ import pygame
 from Constants import *
 from Player import *
 from functions import *
+from game_area import *
 
 
 class Main():
@@ -13,6 +14,7 @@ class Main():
         self.player = Player
         self.image = pygame.image.load('data/Zero/Run/0.gif')
         self.image = pygame.transform.scale(self.image, (60, 50))
+        self.area = Area()
         self.x = self.y = 0
 
     def handle_events(self):
@@ -29,9 +31,9 @@ class Main():
     def render(self):
         """ rendering everything """
         self.screen.blit(self.background, (0, 0))
-        for i in player_group:
-            i.rect.x += self.x
-            self.x = 0
+
+        player_group.update(self.x, self.area)
+        self.x = 0
         player_group.draw(self.screen)
         pygame.display.flip()
 

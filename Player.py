@@ -15,6 +15,10 @@ class Player(pygame.sprite.Sprite):
         pos_x = pos_y = 0
         self.rect = self.image.get_rect().move(100, 375)
 
+    def update(self, x, mountain):
+        self.rect.x += x
+        if not pygame.sprite.collide_mask(self, mountain):
+            self.rect = self.rect.move(0, 1)
     def move(self):
         """ the movement of the player """
         pass
