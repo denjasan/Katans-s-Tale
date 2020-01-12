@@ -1,6 +1,6 @@
 import pygame
 
-from Main import
+from Main import *
 
 
 class AnimatedSprite(pygame.sprite.Sprite):
