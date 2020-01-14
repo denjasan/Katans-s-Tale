@@ -1,7 +1,7 @@
 SIZE = WIDTH, HEIGHT = 800, 600
 
-RIGHT = 0
-LEFT = 1
+RIGHT = 1
+LEFT = 0
 
 ALIVE = 0
 ATTACK = 1
@@ -14,6 +14,17 @@ START_Y = 0
 MAX_HP = 20
 DEFENSE = 1001000
 OFFENSE = 1231231 
+
+PLAYER_SPEED = 5
+
+STAND = 'data/Zero/StandR/'
+STAND_NUM = 11
+RUN = 'data/Zero/RunR/'
+RUN_NUM = 10
+DANCE = 'data/Zero/EpicDance/'
+DANCE_NUM = 12
+SWORD = 'data/Zero/SwordR/'
+SWORD_NUM = 15
 
 
 
