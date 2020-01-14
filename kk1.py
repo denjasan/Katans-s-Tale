@@ -91,6 +91,7 @@ while s_h > 25:
     pygame.display.flip()
 
 heart.rect = heart.image.get_rect()
+heart.rect.x, heart.rect.y = width // 2, height // 2
 
 
 def defense():
