@@ -23,6 +23,24 @@ def load_image(name, colorkey=None):
     return image
 
 
+def death():
+    global running
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.fill((0, 0, 0))
+    font = pygame.font.Font(None, 50)
+    text = font.render("Вы, умерли.", 1, (100, 255, 100))
+    text_x = width // 2 - text.get_width() // 2
+    text_y = height // 2 - text.get_height() // 2
+    text_w = text.get_width()
+    text_h = text.get_height()
+    screen.blit(text, (text_x, text_y))
+    pygame.draw.rect(screen, (0, 255, 0), (text_x - 10, text_y - 10,
+                                           text_w + 20, text_h + 20), 1)
+    pygame.display.flip()
+
+
 class Heart(pygame.sprite.Sprite):
     def __init__(self, group):
         # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
@@ -49,8 +67,6 @@ class Heart(pygame.sprite.Sprite):
 
         if pygame.sprite.spritecollideany(self, enemy_group):
             Constants.MAX_HP -= 2
-        if Constants.MAX_HP == 0:
-            print(123)
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -66,8 +82,8 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         if pygame.sprite.spritecollideany(self, player_group):
-            self.rect.x += -self.vx * 4
-            self.rect.y += -self.vy * 4
+            self.rect.x += random.randint(-100, 100)
+            self.rect.y += random.randint(-100, 100)
 
         self.rect.x += self.vx
         if self.rect.x > width:
@@ -111,7 +127,7 @@ heart.rect.x, heart.rect.y = width // 2, height // 2
 
 def defense():
     global dx, dy, heart, running, enemy_group
-    if heart.Zähler <= 900:
+    if heart.Zähler <= 500:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -143,6 +159,12 @@ def attack():
             running = False
     if pygame.key.get_pressed()[Constants.SPACE] == 1:
         flag = True
+        Constants.E_HP - int(width * 0.8 - abs(width // 2 - x - 100))
+        if Constants.E_HP <= 0:
+            win()
+        else:
+            heart.Zähler = 0
+
     if flag:
         return
     if x >= int(width * 0.8) or x < 0:
@@ -155,6 +177,16 @@ def attack():
     pygame.display.flip()
 
 
+def win():
+    global running
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    screen.fill((0, 0, 0))
+    pygame.draw.rect(screen, (255, 0, 0), (width // 2, 0, 5, 1000), 0)
+    pygame.display.flip()
+
+
 heart.image = pygame.transform.scale(heart.image, (30, 30))
 
 for _ in range(10):
@@ -162,8 +194,12 @@ for _ in range(10):
 
 while running:
     heart.Zähler += 1
-    if heart.Zähler <= 100:
+    if heart.Zähler <= 500 and Constants.MAX_HP > 0:
         defense()
+    elif Constants.MAX_HP <= 0:
+        death()
+    elif Constants.E_HP <= 0:
+        win()
     else:
         attack()
 
