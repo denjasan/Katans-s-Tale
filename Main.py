@@ -4,6 +4,7 @@ from Constants import *
 from Player import *
 from functions import *
 from game_area import *
+from Camera import Camera
 
 
 class Main():
@@ -31,7 +32,6 @@ class Main():
     def render(self):
         """ rendering everything """
         self.screen.blit(self.background, (0, 0))
-
         player_group.update(self.x, self.area)
         self.x = 0
         player_group.draw(self.screen)
@@ -39,8 +39,12 @@ class Main():
 
     def main_loop(self):
         """ main program cycle """
+        camera = Camera()
         new_player = Player("Main player", self.image)
         while self.running:
+            camera.update(new_player)
+            for i in tiles_group:
+                camera.apply(i)
             self.handle_events()
             self.render()
 

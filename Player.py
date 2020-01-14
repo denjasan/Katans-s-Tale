@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += x
         if not pygame.sprite.collide_mask(self, mountain):
             self.rect = self.rect.move(0, 1)
+            print(self.rect.move(0, 1))
     def move(self):
         """ the movement of the player """
         pass

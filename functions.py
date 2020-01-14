@@ -3,6 +3,9 @@ import sys
 import pygame
 
 
+pygame.init()
+pygame.display.flip()
+
 def terminate():
     pygame.quit()
     sys.exit()
