@@ -69,6 +69,23 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.x += -self.vx * 4
             self.rect.y += -self.vy * 4
 
+        self.rect.x += self.vx
+        if self.rect.x > width:
+            self.rect.x -= width
+        if self.rect.x < 0:
+            self.rect.x += width
+
+        self.rect.y += self.vy
+
+        if self.rect.y > height:
+            self.rect.y -= height
+        if self.rect.y < 0:
+            self.rect.y += height
+
+
+
+
+
 
 heart = Heart(player_group)
 running = True
