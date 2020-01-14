@@ -83,19 +83,17 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.y += height
 
 
-
-
-
-
 heart = Heart(player_group)
 running = True
 s_h = 2000
-y = 0
+x = y = 0
 v = 500  # пикселей в секунду
 fps = 60
 dx = dy = 0
 clock = pygame.time.Clock()
 f = 10
+vector = v / fps
+flag = False
 while s_h > 25:
     screen.fill((0, 0, 0))
     player_group.draw(screen)
@@ -137,15 +135,36 @@ def defense():
         pygame.display.flip()
 
 
+def attack():
+    global running, x, y, vector, flag
+    screen.fill((0, 0, 0))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+    if pygame.key.get_pressed()[Constants.SPACE] == 1:
+        flag = True
+    if flag:
+        return
+    if x >= int(width * 0.8) or x < 0:
+        vector *= -1
+    x += vector
+    pygame.draw.rect(screen, (255, 255, 255), (int(width * 0.1), int(height * 0.7), int(width * 0.8), 50), 0)
+    pygame.draw.rect(screen, (100, 100, 100), (int(width * 0.1) + x, int(height * 0.7) - 15, 10, 80), 0)
+    pygame.draw.rect(screen, (255, 0, 0), (width // 2, 0, 5, 1000), 0)
+    clock.tick(fps)
+    pygame.display.flip()
+
+
 heart.image = pygame.transform.scale(heart.image, (30, 30))
 
 for _ in range(10):
     Enemy(enemy_group)
+
 while running:
     heart.Zähler += 1
-    if heart.Zähler <= 900:
+    if heart.Zähler <= 100:
         defense()
     else:
-        heart.Zähler = 0
+        attack()
 
 

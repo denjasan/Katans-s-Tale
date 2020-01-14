@@ -25,3 +25,5 @@ DANCE = 'data/Zero/EpicDance/'
 DANCE_NUM = 12
 SWORD = 'data/Zero/SwordR/'
 SWORD_NUM = 15
+
+SPACE = 32
