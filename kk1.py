@@ -1,6 +1,7 @@
 import os
 import random
 import pygame
+import Constants
 
 pygame.init()
 size = width, height = 800, 600
@@ -22,15 +23,15 @@ def load_image(name, colorkey=None):
     return image
 
 
-class Player(pygame.sprite.Sprite):
+class Heart(pygame.sprite.Sprite):
     def __init__(self, group):
         # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
-        self.image = pygame.Surface([20, 20])
-        self.image.fill(pygame.Color("blue"))
+        self.image = pygame.transform.scale(load_image("heart.png"), (2000, 2000))
         self.rect = self.image.get_rect()
         self.rect.x = width // 2
         self.rect.y = height // 2
+        self.Zähler = 1
 
     def update(self, x, y):
         self.rect.x += x
@@ -46,6 +47,11 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y < 0:
             self.rect.y += height
 
+        if pygame.sprite.spritecollideany(self, enemy_group):
+            Constants.MAX_HP -= 2
+        if Constants.MAX_HP == 0:
+            print(123)
+
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, group):
@@ -59,44 +65,69 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y = random.randint(0, height)
 
     def update(self):
-        self.rect.x += self.vx
-        if self.rect.x > width or self.rect.x < 0:
-            self.rect.x = random.randint(0, width)
-
-        self.rect.y += self.vy
-
-        if self.rect.y > height or self.rect.y < 0:
-            self.rect.y = random.randint(0, height)
+        if pygame.sprite.spritecollideany(self, player_group):
+            self.rect.x += -self.vx * 4
+            self.rect.y += -self.vy * 4
 
 
-heart = Player(player_group)
+heart = Heart(player_group)
 running = True
+s_h = 2000
 y = 0
-v = 300  # пикселей в секунду
+v = 500  # пикселей в секунду
 fps = 60
 dx = dy = 0
 clock = pygame.time.Clock()
+f = 10
+while s_h > 25:
+    screen.fill((0, 0, 0))
+    player_group.draw(screen)
+    if s_h - f < 25:
+        f = s_h - 25
+    s_h = s_h - f
+    heart.image = pygame.transform.scale(heart.image, (s_h, s_h))
+    heart.rect.x, heart.rect.y = width // 2 - s_h // 2, height // 2 - s_h // 2
+    clock.tick(fps)
+    pygame.display.flip()
+
+heart.rect = heart.image.get_rect()
+
+
+def defense():
+    global dx, dy, heart, running, enemy_group
+    if heart.Zähler <= 900:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        if pygame.key.get_pressed()[275]:
+            dx = v / fps + 1
+        if pygame.key.get_pressed()[276]:
+            dx = -v / fps
+
+        if pygame.key.get_pressed()[274]:
+            dy = v / fps + 1
+        if pygame.key.get_pressed()[273]:
+            dy = -v / fps
+        screen.fill((0, 0, 0))
+        heart.update(dx, dy)
+        enemy_group.update()
+        enemy_group.draw(screen)
+        dx = dy = 0
+        player_group.draw(screen)
+        clock.tick(fps)
+        pygame.display.flip()
+
+
+heart.image = pygame.transform.scale(heart.image, (30, 30))
+
 for _ in range(10):
     Enemy(enemy_group)
 while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    heart.Zähler += 1
+    if heart.Zähler <= 900:
+        defense()
+    else:
+        heart.Zähler = 0
 
-    if pygame.key.get_pressed()[275]:
-        dx = v / fps + 1
-    if pygame.key.get_pressed()[276]:
-        dx = -v / fps
 
-    if pygame.key.get_pressed()[274]:
-        dy = v / fps + 1
-    if pygame.key.get_pressed()[273]:
-        dy = -v / fps
-    screen.fill((0, 0, 0))
-    heart.update(dx, dy)
-    enemy_group.update()
-    enemy_group.draw(screen)
-    dx = dy = 0
-    player_group.draw(screen)
-    clock.tick(fps)
-    pygame.display.flip()
