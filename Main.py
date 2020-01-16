@@ -1,52 +1,70 @@
 import os
+
 import pygame
+
 from Constants import *
 from Player import *
 from functions import *
 from game_area import *
+from groups import *
 from Camera import Camera
 
 
-class Main():
+class Main:
     def __init__(self, screen):
+
+        self.clock = pygame.time.Clock()
+
         self.screen = screen
         self.running = True
+
         self.background = pygame.image.load('data/ClubNeon.png')
-        self.player = Player
-        self.image = pygame.image.load('data/Zero/Run/0.gif')
-        self.image = pygame.transform.scale(self.image, (60, 50))
+
+        self.player = Player('Sosiska', ZERO)
+
         self.area = Area()
-        self.x = self.y = 0
+
+        self.main_loop()
 
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-        keys = list(pygame.key.get_pressed())
-        if 1 in keys:
-            if keys[97] == 1:
-                self.x = -1
-            if keys[100] == 1:
-                self.x = 1
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    self.player.mooving = [0, 1]
+                if event.key == pygame.K_a:
+                    self.player.mooving = [1, 0]
+
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_d:
+                    self.player.mooving = [0, 0]
+                if event.key == pygame.K_a:
+                    self.player.mooving = [0, 0]
 
     def render(self):
         """ rendering everything """
         self.screen.blit(self.background, (0, 0))
-        player_group.update(self.x, self.area)
-        self.x = 0
-        player_group.draw(self.screen)
+        self.player.render()
+
+        all_sprites.draw(self.screen)
+        all_sprites.update(self.area)
+
+        # player_group.update(self.x, self.area)
+        # self.x = 0
+        # player_group.draw(self.screen)
+        self.clock.tick(FPS)
         pygame.display.flip()
 
     def main_loop(self):
         """ main program cycle """
-        camera = Camera()
-        new_player = Player("Main player", self.image)
+
         while self.running:
-            camera.update(new_player)
-            for i in tiles_group:
-                camera.apply(i)
-            self.handle_events()
+            if self.player.state != DEAD:
+                self.player.moove()
             self.render()
+            self.handle_events()
 
 
 if __name__ == '__main__':
