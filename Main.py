@@ -31,13 +31,16 @@ class Main:
             if event.type == pygame.QUIT:
                 self.running = False
 
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(event.pos)
+
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     self.player.mooving = [0, 1]
                 if event.key == pygame.K_a:
                     self.player.mooving = [1, 0]
 
-            elif event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     self.player.mooving = [0, 0]
                 if event.key == pygame.K_a:
@@ -65,6 +68,8 @@ class Main:
                 self.player.moove()
             self.render()
             self.handle_events()
+
+        terminate()
 
 
 if __name__ == '__main__':

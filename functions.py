@@ -8,6 +8,7 @@ def all_pics(path, n):
     images = []
     for i in range(n):
         image = load_image(path[5:] + str(i) + '.gif')
+        image = pygame.transform.scale(image, (30, 25))
         images.append(image)
     return images
 

@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.sword_images = []
         if self.player == ZERO:
             self.image = pygame.image.load('data/Zero/StandR/0.gif')
-            # self.image = pygame.transform.scale(self.image, (60, 50))
+            self.image = pygame.transform.scale(self.image, (30, 25))
 
             self.stand_images.append(all_pics(STANDL, STAND))
             self.stand_images.append(all_pics(STANDR, STAND))
@@ -43,7 +43,8 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, area):
         if not pygame.sprite.collide_mask(self, area):
-            self.rect = self.rect.move(0, 2)
+            self.rect = self.rect.move(0, 5)
+        # if self.mask.overlap_area(area.mask, offset) > 0:
         # self.rect.x += x
         # if not pygame.sprite.collide_mask(self, mountain):
         #     self.rect = self.rect.move(0, 1)
