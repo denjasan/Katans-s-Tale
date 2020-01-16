@@ -1,14 +1,16 @@
 import os
 import sys
+
 import pygame
 
 
-pygame.init()
-pygame.display.flip()
-
-def terminate():
-    pygame.quit()
-    sys.exit()
+def all_pics(path, n):
+    images = []
+    for i in range(n):
+        image = load_image(path[5:] + str(i) + '.gif')
+        image = pygame.transform.scale(image, (30, 25))
+        images.append(image)
+    return images
 
 
 def load_image(name, colorkey=None):
@@ -23,17 +25,6 @@ def load_image(name, colorkey=None):
     return image
 
 
-def handle_events():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            terminate()
-        keys = list(pygame.key.get_pressed())
-        if 1 in keys:
-            if keys[119] == 1:
-                y = 10
-            if keys[97] == 1:
-                x = -10
-            if keys[115] == 1:
-                y = -10
-            if keys[100] == 1:
-                x = 10
+def terminate():
+    pygame.quit()
+    sys.exit()
