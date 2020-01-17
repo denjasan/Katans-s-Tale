@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.state = ALIVE
         self.hp = MAX_HP
         self.direction = RIGHT
-        self.mooving = [0, 0]
+        self.moving = [0, 0]
         self.anim_count = 0
 
         self.mask = pygame.mask.from_surface(self.image)
@@ -52,14 +52,14 @@ class Player(pygame.sprite.Sprite):
     def moove(self):
         """ the movement of the player """
 
-        if self.mooving[RIGHT] == self.mooving[LEFT]:
+        if self.moving[RIGHT] == self.moving[LEFT]:
             self.situation = STANDING
 
-        if self.mooving[RIGHT] == 1:
+        if self.moving[RIGHT] == 1:
             self.situation = RUNNING
             self.direction = RIGHT
             self.rect.x += PLAYER_SPEED
-        if self.mooving[LEFT] == 1:
+        if self.moving[LEFT] == 1:
             self.situation = RUNNING
             self.direction = LEFT
             self.rect.x -= PLAYER_SPEED
