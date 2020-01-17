@@ -15,6 +15,8 @@ class Background(pygame.sprite.Sprite):
         super().__init__(all_sprites)
         self.image = load_image("ClubNeon.png")
         self.rect = self.image.get_rect().move(0, 0)
+
+
 class Main:
     def __init__(self, screen):
 
@@ -28,6 +30,7 @@ class Main:
         self.player = Player('Sosiska', ZERO)
 
         self.area = Area()
+        self.area_x = AreaX()
 
         self.main_loop()
 
@@ -56,7 +59,7 @@ class Main:
         self.player.render()
 
         all_sprites.draw(self.screen)
-        all_sprites.update(self.area)
+        all_sprites.update(self.area, self.area_x)
 
         # player_group.update(self.x, self.area)
         # self.x = 0

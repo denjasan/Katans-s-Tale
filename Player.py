@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.sword_images = []
         if self.player == ZERO:
             self.image = pygame.image.load('data/Zero/StandR/0.gif')
-            self.image = pygame.transform.scale(self.image, (30, 25))
+            self.image = pygame.transform.scale(self.image, (60, 50))
 
             self.stand_images.append(all_pics(STANDL, STAND))
             self.stand_images.append(all_pics(STANDR, STAND))
@@ -41,20 +41,50 @@ class Player(pygame.sprite.Sprite):
 
         self.add(all_sprites)
 
-    def update(self, area):
+    def update(self, area, area_x):
+
         if not pygame.sprite.collide_mask(self, area):
             self.rect = self.rect.move(0, 5)
 
-            # See if we hit anything
-        block_hit_list = pygame.sprite.spritecollide(self, all_sprites, False)
-        for block in block_hit_list:
+        if pygame.sprite.collide_mask(self, area_x):
+
+            flag = False
+            for i in STAIRS:
+                if i[0] <= self.rect.x and self.rect.x <= i[1]:
+                    where = i[2]
+                    flag = True
+                    break
+
             # If we are moving right,
             # set our right side to the left side of the item we hit
-            if self.direction == RUNNING:
-                self.rect.right = block.rect.left
-            if self.direction == RUNNING:
+            if flag and self.mooving[RIGHT] == 1:
+                if self.direction == where:
+                    self.rect.y += STAIRS_HEIGHT
+                else:
+                    self.rect.y -= STAIRS_HEIGHT
+            if flag and self.mooving[LEFT] == 1:
+                print(self.direction, where)
+                if self.direction == where:
+                    self.rect.y -= STAIRS_HEIGHT
+                else:
+                    self.rect.y += STAIRS_HEIGHT
+
+            if self.mooving[RIGHT] == 1:
+                self.rect.x = self.rect.x - PLAYER_SPEED
+            if self.mooving[LEFT] == 1:
                 # Otherwise if we are moving left, do the opposite.
-                self.rect.left = block.rect.right
+                self.rect.x = self.rect.x + PLAYER_SPEED
+
+        # See if we hit anything
+        # block_hit_list = pygame.sprite.spritecollide(self, areaG, False)
+        # for block in block_hit_list:
+        #     # If we are moving right,
+        #     # set our right side to the left side of the item we hit
+        #     if self.mooving[RIGHT] == 1:
+        #         self.rect.right = block.rect.left
+        #     if self.mooving[LEFT] == 1:
+        #         # Otherwise if we are moving left, do the opposite.
+        #         self.rect.left = block.rect.right
         # if self.mask.overlap_area(area.mask, offset) > 0:
         # self.rect.x += x
         # if not pygame.sprite.collide_mask(self, mountain):

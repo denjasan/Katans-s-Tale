@@ -12,5 +12,16 @@ class Area(pygame.sprite.Sprite):
         self.rect = [0, 0]
         self.mask = pygame.mask.from_surface(self.image)
         self.bottom = HEIGHT
-        self.add(all_sprites)
+        self.add(areaG)
+
+
+class AreaX(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(areaGX)
+        self.image = pygame.image.load('data/fon/x1.png')
+        self.rect = self.image.get_rect()
+        self.rect = [0, 0]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.bottom = HEIGHT
+        self.add(areaGX)
 
