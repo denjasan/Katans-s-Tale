@@ -14,8 +14,9 @@ class Background(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
         self.image = load_image("ClubNeon.png")
-        self.rect = self.image.get_rect().move(0, 0)
+        self.rect = self.image.get_rect().move(100, 0)
         self.rect.x = self.rect.y = 0
+        self.add(fon_group)
 
 
 class Main:
@@ -28,6 +29,7 @@ class Main:
         self.player = Player('Sosiska', ZERO)
         self.area = Area()
         self.area_x = AreaX()
+        self.camera = Camera()
 
         self.main_loop()
 
@@ -41,23 +43,23 @@ class Main:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
-                    self.player.mooving[RIGHT] = 1
+                    self.player.moving[RIGHT] = 1
                 if event.key == pygame.K_a:
-                    self.player.mooving[LEFT] = 1
+                    self.player.moving[LEFT] = 1
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
-                    self.player.mooving[RIGHT] = 0
+                    self.player.moving[RIGHT] = 0
                 if event.key == pygame.K_a:
-                    self.player.mooving[LEFT] = 0
+                    self.player.moving[LEFT] = 0
 
     def render(self):
         """ rendering everything """
         self.player.render()
-        all_sprites.update(self.area)
+        all_sprites.update(self.area, self.area_x)
         all_sprites.draw(self.screen)
 
-        player_group.update(self.area)
+        player_group.update(self.area, self.area_x)
         player_group.draw(screen)
 
         # player_group.update(self.x, self.area)
@@ -70,11 +72,11 @@ class Main:
         """ main program cycle """
         while self.running:
             if self.player.state != DEAD:
-                self.player.moove()
+                self.player.move()
             self.render()
             self.handle_events()
             self.camera.update(self.player)
-            for i in all_sprites:
+            for i in fon_group:
                 self.camera.apply(i)
         terminate()
 

@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
         self.state = ALIVE
         self.hp = MAX_HP
         self.direction = RIGHT
-        self.mooving = [0, 0]
+        self.moving = [0, 0]
         self.anim_count = 0
 
         self.mask = pygame.mask.from_surface(self.image)
@@ -57,21 +57,21 @@ class Player(pygame.sprite.Sprite):
 
             # If we are moving right,
             # set our right side to the left side of the item we hit
-            if flag and self.mooving[RIGHT] == 1:
+            if flag and self.moving[RIGHT] == 1:
                 if self.direction == where:
                     self.rect.y += STAIRS_HEIGHT
                 else:
                     self.rect.y -= STAIRS_HEIGHT
-            if flag and self.mooving[LEFT] == 1:
+            if flag and self.moving[LEFT] == 1:
                 print(self.direction, where)
                 if self.direction == where:
                     self.rect.y -= STAIRS_HEIGHT
                 else:
                     self.rect.y += STAIRS_HEIGHT
 
-            if self.mooving[RIGHT] == 1:
+            if self.moving[RIGHT] == 1:
                 self.rect.x = self.rect.x - PLAYER_SPEED
-            if self.mooving[LEFT] == 1:
+            if self.moving[LEFT] == 1:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.x = self.rect.x + PLAYER_SPEED
 
@@ -80,9 +80,9 @@ class Player(pygame.sprite.Sprite):
         # for block in block_hit_list:
         #     # If we are moving right,
         #     # set our right side to the left side of the item we hit
-        #     if self.mooving[RIGHT] == 1:
+        #     if self.moving[RIGHT] == 1:
         #         self.rect.right = block.rect.left
-        #     if self.mooving[LEFT] == 1:
+        #     if self.moving[LEFT] == 1:
         #         # Otherwise if we are moving left, do the opposite.
         #         self.rect.left = block.rect.right
         # if self.mask.overlap_area(area.mask, offset) > 0:
@@ -90,19 +90,19 @@ class Player(pygame.sprite.Sprite):
         # if not pygame.sprite.collide_mask(self, mountain):
         #     self.rect = self.rect.move(0, 1)
 
-    def moove(self):
+    def move(self):
         """ the movement of the player """
 
-        if self.mooving[RIGHT] == self.mooving[LEFT]:
+        if self.moving[RIGHT] == self.moving[LEFT]:
             self.situation = STANDING
 
         else:
 
-            if self.mooving[RIGHT] == 1:
+            if self.moving[RIGHT] == 1:
                 self.situation = RUNNING
                 self.direction = RIGHT
                 self.rect.x += PLAYER_SPEED
-            if self.mooving[LEFT] == 1:
+            if self.moving[LEFT] == 1:
                 self.situation = RUNNING
                 self.direction = LEFT
                 self.rect.x -= PLAYER_SPEED

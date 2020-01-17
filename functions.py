@@ -3,6 +3,8 @@ import sys
 
 import pygame
 
+from groups import *
+
 
 def all_pics(path, n):
     images = []
@@ -28,3 +30,15 @@ def load_image(name, colorkey=None):
 def terminate():
     pygame.quit()
     sys.exit()
+
+
+def shift_world(world_shift, shift_x):
+    """ When the user moves left/right and we need to scroll everything: """
+
+    # Keep track of the shift amount
+    world_shift += shift_x
+
+    # Go through all the sprite lists and shift
+    for fon in fon_group:
+        fon.rect.x += shift_x
+
