@@ -10,6 +10,11 @@ from groups import *
 from Camera import Camera
 
 
+class Background(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(all_sprites)
+        self.image = load_image("ClubNeon.png")
+        self.rect = self.image.get_rect().move(0, 0)
 class Main:
     def __init__(self, screen):
 
@@ -18,7 +23,7 @@ class Main:
         self.screen = screen
         self.running = True
 
-        self.background = pygame.image.load('data/ClubNeon.png')
+        self.background = Background()
 
         self.player = Player('Sosiska', ZERO)
 
@@ -48,7 +53,6 @@ class Main:
 
     def render(self):
         """ rendering everything """
-        self.screen.blit(self.background, (0, 0))
         self.player.render()
 
         all_sprites.draw(self.screen)
