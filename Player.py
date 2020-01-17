@@ -7,7 +7,7 @@ from functions import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, name, player):
-        super().__init__(all_sprites)
+        super().__init__(player_group)
         self.player = player
         self.stand_images = []
         self.run_images = []
@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
 
         self.mask = pygame.mask.from_surface(self.image)
 
-        self.add(all_sprites)
+        #self.add(all_sprites)
 
     def update(self, area):
         if not pygame.sprite.collide_mask(self, area):
