@@ -6,3 +6,5 @@ player_group = pygame.sprite.Group()
 horizontal_borders = pygame.sprite.Group()
 vertical_borders = pygame.sprite.Group()
 mini_game = pygame.sprite.Group()
+
+ground_group = pygame.sprite.Group()

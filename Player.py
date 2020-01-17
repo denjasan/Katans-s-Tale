@@ -44,6 +44,17 @@ class Player(pygame.sprite.Sprite):
     def update(self, area):
         if not pygame.sprite.collide_mask(self, area):
             self.rect = self.rect.move(0, 5)
+
+            # See if we hit anything
+        block_hit_list = pygame.sprite.spritecollide(self, all_sprites, False)
+        for block in block_hit_list:
+            # If we are moving right,
+            # set our right side to the left side of the item we hit
+            if self.direction == RUNNING:
+                self.rect.right = block.rect.left
+            if self.direction == RUNNING:
+                # Otherwise if we are moving left, do the opposite.
+                self.rect.left = block.rect.right
         # if self.mask.overlap_area(area.mask, offset) > 0:
         # self.rect.x += x
         # if not pygame.sprite.collide_mask(self, mountain):
@@ -55,14 +66,16 @@ class Player(pygame.sprite.Sprite):
         if self.mooving[RIGHT] == self.mooving[LEFT]:
             self.situation = STANDING
 
-        if self.mooving[RIGHT] == 1:
-            self.situation = RUNNING
-            self.direction = RIGHT
-            self.rect.x += PLAYER_SPEED
-        if self.mooving[LEFT] == 1:
-            self.situation = RUNNING
-            self.direction = LEFT
-            self.rect.x -= PLAYER_SPEED
+        else:
+
+            if self.mooving[RIGHT] == 1:
+                self.situation = RUNNING
+                self.direction = RIGHT
+                self.rect.x += PLAYER_SPEED
+            if self.mooving[LEFT] == 1:
+                self.situation = RUNNING
+                self.direction = LEFT
+                self.rect.x -= PLAYER_SPEED
 
     def render(self):
         """ rendering player """

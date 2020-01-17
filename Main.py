@@ -36,15 +36,15 @@ class Main:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
-                    self.player.mooving = [0, 1]
+                    self.player.mooving[RIGHT] = 1
                 if event.key == pygame.K_a:
-                    self.player.mooving = [1, 0]
+                    self.player.mooving[LEFT] = 1
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
-                    self.player.mooving = [0, 0]
+                    self.player.mooving[RIGHT] = 0
                 if event.key == pygame.K_a:
-                    self.player.mooving = [0, 0]
+                    self.player.mooving[LEFT] = 0
 
     def render(self):
         """ rendering everything """
