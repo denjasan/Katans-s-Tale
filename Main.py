@@ -15,20 +15,17 @@ class Background(pygame.sprite.Sprite):
         super().__init__(all_sprites)
         self.image = load_image("ClubNeon.png")
         self.rect = self.image.get_rect().move(0, 0)
+        self.rect.x = self.rect.y = 0
 
 
 class Main:
     def __init__(self, screen):
 
         self.clock = pygame.time.Clock()
-
         self.screen = screen
         self.running = True
-
         self.background = Background()
-
         self.player = Player('Sosiska', ZERO)
-
         self.area = Area()
         self.area_x = AreaX()
 
@@ -57,9 +54,11 @@ class Main:
     def render(self):
         """ rendering everything """
         self.player.render()
-
+        all_sprites.update(self.area)
         all_sprites.draw(self.screen)
-        all_sprites.update(self.area, self.area_x)
+
+        player_group.update(self.area)
+        player_group.draw(screen)
 
         # player_group.update(self.x, self.area)
         # self.x = 0
@@ -69,19 +68,21 @@ class Main:
 
     def main_loop(self):
         """ main program cycle """
-
         while self.running:
             if self.player.state != DEAD:
                 self.player.moove()
             self.render()
             self.handle_events()
-
+            self.camera.update(self.player)
+            for i in all_sprites:
+                self.camera.apply(i)
         terminate()
 
 
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(SIZE)
+    #screen = pygame.display.set_mode((1920, 1080))
     game = Main(screen)
     game.main_loop()
 
