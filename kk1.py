@@ -4,7 +4,7 @@ import pygame
 import Constants
 
 pygame.init()
-size = width, height = 800, 600
+size = width, height = 1080, 720
 screen = pygame.display.set_mode(size)
 pygame.display.flip()
 player_group = pygame.sprite.Group()

@@ -11,11 +11,15 @@ from Camera import Camera
 
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, flag=False):
         super().__init__(all_sprites)
         self.image = load_image("ClubNeon.png")
-        self.rect = self.image.get_rect().move(100, 0)
-        self.rect.x = self.rect.y = 0
+        self.rect = self.image.get_rect()
+        if not flag:
+            self.rect.x = 0
+        else:
+            self.rect.x = -215
+        self.rect.y = 117
         self.add(fon_group)
 
 
@@ -27,8 +31,8 @@ class Main:
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
-        self.area = Area()
-        self.area_x = AreaX()
+        self.area = AreaY1()
+        self.area_x = AreaX1()
         self.camera = Camera()
 
         self.main_loop()
@@ -70,14 +74,24 @@ class Main:
 
     def main_loop(self):
         """ main program cycle """
+        first_time = True
         while self.running:
             if self.player.state != DEAD:
                 self.player.move()
+            if self.player.rect.y < SECOND_FLOOR and first_time:
+                self.area.kill()
+                self.background.kill()
+                self.area_x.kill()
+                self.area = AreaY2()
+                self.background = Background(True)
+                self.area_x = AreaX1(True)
+                first_time = False
             self.render()
             self.handle_events()
             self.camera.update(self.player)
-            for i in fon_group:
-                self.camera.apply(i)
+            # for i in fon_group:
+            self.camera.apply(fon_group)
+            # all_sprites.remove(player_group, self.area_x, self.area)
         terminate()
 
 

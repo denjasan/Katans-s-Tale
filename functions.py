@@ -4,13 +4,14 @@ import sys
 import pygame
 
 from groups import *
+from Constants import *
 
 
 def all_pics(path, n):
     images = []
     for i in range(n):
         image = load_image(path[5:] + str(i) + '.gif')
-        image = pygame.transform.scale(image, (60, 50))
+        image = pygame.transform.scale(image, (ZERO_HEIGHT, ZERO_WIDTH))
         images.append(image)
     return images
 

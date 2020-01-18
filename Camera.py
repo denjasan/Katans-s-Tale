@@ -8,8 +8,12 @@ class Camera:
         self.dy = 0
 
     def apply(self, obj):
-        if -LEVEL_WIDTH <= obj.rect.x + self.dx <= 0:
-            obj.rect.x += self.dx
+        for i in obj:
+            # print(i.rect.x, self.dx, i.rect.x + self.dx)
+            if -215 <= i.rect.x + self.dx <= 0:
+                i.rect.x += self.dx
+            # else:
+            #     PLAYER_SPEED *= 2
 
     def update(self, target):
         # print(target.moving)

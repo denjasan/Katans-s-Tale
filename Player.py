@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.sword_images = []
         if self.player == ZERO:
             self.image = pygame.image.load('data/Zero/StandR/0.gif')
-            self.image = pygame.transform.scale(self.image, (60, 50))
+            self.image = pygame.transform.scale(self.image, (ZERO_HEIGHT, ZERO_WIDTH))
 
             self.stand_images.append(all_pics(STANDL, STAND))
             self.stand_images.append(all_pics(STANDR, STAND))
@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
 
             flag = False
             for i in STAIRS:
-                if i[0] <= self.rect.x and self.rect.x <= i[1]:
+                if i[0] <= self.rect.x <= i[1]:
                     where = i[2]
                     flag = True
                     break
@@ -59,15 +59,15 @@ class Player(pygame.sprite.Sprite):
             # set our right side to the left side of the item we hit
             if flag and self.moving[RIGHT] == 1:
                 if self.direction == where:
-                    self.rect.y += STAIRS_HEIGHT
-                else:
                     self.rect.y -= STAIRS_HEIGHT
+                # else:
+                #     self.rect.y += STAIRS_HEIGHT
             if flag and self.moving[LEFT] == 1:
                 print(self.direction, where)
                 if self.direction == where:
                     self.rect.y -= STAIRS_HEIGHT
-                else:
-                    self.rect.y += STAIRS_HEIGHT
+                # else:
+                #     self.rect.y += STAIRS_HEIGHT
 
             if self.moving[RIGHT] == 1:
                 self.rect.x = self.rect.x - PLAYER_SPEED
@@ -109,6 +109,8 @@ class Player(pygame.sprite.Sprite):
 
     def render(self):
         """ rendering player """
+
+        images = []
         if self.situation == RUNNING:
             images = self.run_images
         elif self.situation == STANDING:
