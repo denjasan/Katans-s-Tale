@@ -14,19 +14,20 @@ class Player(pygame.sprite.Sprite):
         self.sword_images = []
         self.dance_images = []
         if self.player == ZERO:
+            size = (ZERO_HEIGHT, ZERO_WIDTH)
             self.image = pygame.image.load('data/Zero/StandR/0.gif')
-            self.image = pygame.transform.scale(self.image, (ZERO_HEIGHT, ZERO_WIDTH))
+            self.image = pygame.transform.scale(self.image, size)
 
-            self.stand_images.append(all_pics(STANDL, STANDING))
-            self.stand_images.append(all_pics(STANDR, STANDING))
+            self.stand_images.append(all_pics(STANDL, STANDING, size))
+            self.stand_images.append(all_pics(STANDR, STANDING, size))
 
-            self.run_images.append(all_pics(RUNL, RUNNING))
-            self.run_images.append(all_pics(RUNR, RUNNING))
+            self.run_images.append(all_pics(RUNL, RUNNING, size))
+            self.run_images.append(all_pics(RUNR, RUNNING, size))
 
-            self.sword_images.append(all_pics(SWORDL, SWORDING_YES))
-            self.sword_images.append(all_pics(SWORDR, SWORDING_YES))
+            self.sword_images.append(all_pics(SWORDL, SWORDING_YES, (145, 91)))
+            self.sword_images.append(all_pics(SWORDR, SWORDING_YES, (145, 91)))
 
-            self.dance_images.append(all_pics(DANCER, DANCING))
+            self.dance_images.append(all_pics(DANCER, DANCING, size))
 
         self.rect = self.image.get_rect()
         self.rect.x = START_X
@@ -41,6 +42,9 @@ class Player(pygame.sprite.Sprite):
         self.anim_count = 0
         self.speed = PLAYER_SPEED
         self.fps = FPS
+        self.first_time = True
+        self.gravity = GRAVITY
+        self.last_sender = None
 
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -49,7 +53,7 @@ class Player(pygame.sprite.Sprite):
     def update(self, area, area_x, stairs_del=False):
 
         if not pygame.sprite.collide_mask(self, area):
-            self.rect = self.rect.move(0, 5)
+            self.rect = self.rect.move(0, self.gravity)
 
         if pygame.sprite.collide_mask(self, area_x):
 
@@ -99,58 +103,77 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         """ the movement of the player """
-        if self.moving[RIGHT] == self.moving[LEFT] and not any(self.moving[3:]):
+        if self.moving[RIGHT] == self.moving[LEFT] and not any(self.moving[2:]):
             self.situation = STANDING
             self.fps = FPS // 2
 
         else:
 
-            if self.moving[RIGHT] and not any(self.moving[3:]):
+            if self.moving[RIGHT] and not any(self.moving[2:]):
                 self.fps = FPS
                 self.situation = RUNNING
                 self.direction = RIGHT
                 self.rect.x += self.speed
             # print(not any(self.moving[3:]), self.moving[3:])
-            if self.moving[LEFT] and not any(self.moving[3:]):
+            if self.moving[LEFT] and not any(self.moving[2:]):
                 self.fps = FPS
                 self.situation = RUNNING
                 self.direction = LEFT
                 self.rect.x -= self.speed
-            if self.moving[DANCE]:
+            if self.moving[SWORD]:
+                self.fps = FPS
+                if self.first_time:
+                    self.rect.y -= 22
+                    self.rect.x -= 40
+                    self.gravity = 0
+                    self.first_time = False
+                self.situation = SWORDING_YES
+            elif self.moving[DANCE]:
                 self.fps = FPS // 2
                 self.direction = LEFT
                 self.situation = DANCING
+
+    def go_render(self, images, sender, move_flag=True, move=None):
+        s = images
+        flag = move_flag
+        if self.last_sender != sender:
+            self.anim_count = 0
+        self.last_sender = sender
+        return s, flag, move
 
     def render(self):
         """ rendering player """
 
         images = []
+        move_flag = True
         if self.situation == RUNNING:
-            images = self.run_images
+            images = self.go_render(self.run_images, self.situation)[0]
         elif self.situation == STANDING:
-            images = self.stand_images
+            images = self.go_render(self.stand_images, self.situation)[0]
         elif self.situation == SWORDING_YES:
-            images = self.sword_images
+            images, move_flag, move = self.go_render(self.sword_images, self.situation, False, SWORD)
         elif self.situation == DANCING:
-            images = self.dance_images
+            images = self.go_render(self.dance_images, self.situation)[0]
 
-        if self.direction == RIGHT:
-            if self.anim_count >= self.situation - 1:
-                self.anim_count = 0
+        if not move_flag:
+            self.anim_count = self.anime(images, move_flag, self.anim_count, move)
+        else:
+            self.anim_count = self.anime(images, move_flag, self.anim_count)
 
-            self.image = images[RIGHT][self.anim_count]
-            self.anim_count += 1
+    def anime(self, images, move_flag, anim_count, move=None):
+        if anim_count >= (self.situation - 1) and move_flag:
+            anim_count = 0
 
-        elif self.direction == LEFT:
-            if self.anim_count >= self.situation - 1:
-                self.anim_count = 0
+        if anim_count < self.situation - 1:
+            self.image = images[self.direction][anim_count]
+            anim_count += 1
+        else:
+            self.rect.y += 22
+            self.rect.x += 40
+            self.moving[move] = False
+            self.first_time = True
+            self.gravity = GRAVITY
 
-            self.image = images[LEFT][self.anim_count]
-            self.anim_count += 1
-
-        # player_group.update(self.x, area)
-        # self.x = 0
-        # player_group.draw(screen)
-
+        return anim_count
 
 

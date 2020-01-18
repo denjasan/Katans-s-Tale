@@ -88,6 +88,8 @@ class Main:
                     self.player.moving[LEFT] = True
                 if event.key == pygame.K_w:
                     self.player.moving[DANCE] = True
+                if event.key == pygame.K_SPACE:
+                    self.player.moving[SWORD] = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
@@ -96,6 +98,8 @@ class Main:
                     self.player.moving[LEFT] = False
                 if event.key == pygame.K_w:
                     self.player.moving[DANCE] = False
+                # if event.key == pygame.K_SPACE:
+                #     self.player.moving[SWORD] = True
 
     def render(self):
         """ rendering everything """
@@ -157,6 +161,7 @@ class Main:
 
         first_time = True
         while self.running:
+            self.render()
             if self.player.state != DEAD:
                 self.player.move()
             if self.player.rect.y < SECOND_FLOOR and first_time:
@@ -168,7 +173,6 @@ class Main:
                 self.area_x = AreaX1(True)
                 first_time = False
                 self.stairs_del = True
-            self.render()
             self.handle_events()
             self.camera.update(self.player)
             # for i in fon_group:

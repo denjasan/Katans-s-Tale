@@ -1,6 +1,8 @@
 SIZE = WIDTH, HEIGHT = 1080, 720
 FPS = 30
 
+GRAVITY = 5
+
 RIGHT = 1
 LEFT = 0
 SWORD = 2
@@ -38,7 +40,7 @@ DANCER = 'data/Zero/EpicDance/'
 DANCING = 12
 SWORDR = 'data/Zero/SwordR/'
 SWORDL = 'data/Zero/SwordL/'
-SWORDING_YES = 15
+SWORDING_YES = 27  # 15
 SWORDING_NO = 27
 ROLLR = 'data/Zero/RunR/'
 ROLLL = 'data/Zero/RunL/'
