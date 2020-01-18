@@ -1,4 +1,5 @@
 import os
+import time
 
 import pygame
 
@@ -23,6 +24,24 @@ class Background(pygame.sprite.Sprite):
         self.add(fon_group)
 
 
+class Fon(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(all_sprites)
+        self.image = load_image("ZEROposter.jpg")
+        self.rect = self.image.get_rect()
+        self.rect = -200, 0
+        self.add(fon_group)
+
+
+class Loading(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__(all_sprites)
+        self.image = load_image("pause.png")
+        self.rect = self.image.get_rect()
+        self.rect = -200, 0
+        self.add(fon_group)
+
+
 class Main:
     def __init__(self, screen):
 
@@ -34,6 +53,22 @@ class Main:
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
+
+        pygame.mixer.init()
+        pygame.mixer.music.load('data/music/start.ogg')
+        pygame.mixer.music.play()
+
+        self.fon = Fon()
+        self.start_screen()
+        self.fon.kill()
+
+        pygame.mixer.music.load('data/music/club.ogg')
+        pygame.mixer.music.play()
+
+        self.pause = Loading()
+        self.loading()
+        self.pause.kill()
+        self.screen.fill((0, 0, 0))
 
         self.main_loop()
 
@@ -72,8 +107,49 @@ class Main:
         self.clock.tick(FPS)
         pygame.display.flip()
 
+    def start_screen(self):
+        """ start screen loop """
+
+        all_sprites.draw(self.screen)
+
+        intro_text = "PRESS ANY KEY TO START"
+        font = pygame.font.Font(None, 40)
+        string_rendered = font.render(intro_text, 1, pygame.Color('pink'))
+        intro_rect = string_rendered.get_rect()
+        text_w = string_rendered.get_width()
+        text_h = string_rendered.get_height()
+        intro_rect.y = 630
+        intro_rect.x = (WIDTH - text_w) // 2
+        pygame.draw.rect(self.screen, (0, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 0)
+        pygame.draw.rect(self.screen, (255, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
+        self.screen.blit(string_rendered, intro_rect)
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+                elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                    return  # начинаем игру
+            pygame.display.flip()
+            self.clock.tick(FPS)
+
+    def loading(self):
+        all_sprites.draw(self.screen)
+
+        flag = False
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+            if flag:
+                return  # начинаем игру
+            pygame.display.flip()
+            time.sleep(13.8)
+            flag = True
+
     def main_loop(self):
         """ main program cycle """
+
         first_time = True
         while self.running:
             if self.player.state != DEAD:
@@ -98,7 +174,7 @@ class Main:
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(SIZE)
-    #screen = pygame.display.set_mode((1920, 1080))
+    # screen = pygame.display.set_mode((1920, 1080))
     game = Main(screen)
     game.main_loop()
 
