@@ -26,7 +26,7 @@ class Camera:
     def update(self, target):
         # print(target.moving)
         self.dx = 0
-        if target.moving[LEFT] != target.moving[RIGHT]:
+        if target.moving[LEFT] != target.moving[RIGHT] and not any(target.moving[3:]):
             if target.moving[LEFT] == 1:
                 self.dx = 1 * target.speed
             if target.moving[RIGHT] == 1:

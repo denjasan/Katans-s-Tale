@@ -12,18 +12,21 @@ class Player(pygame.sprite.Sprite):
         self.stand_images = []
         self.run_images = []
         self.sword_images = []
+        self.dance_images = []
         if self.player == ZERO:
             self.image = pygame.image.load('data/Zero/StandR/0.gif')
             self.image = pygame.transform.scale(self.image, (ZERO_HEIGHT, ZERO_WIDTH))
 
-            self.stand_images.append(all_pics(STANDL, STAND))
-            self.stand_images.append(all_pics(STANDR, STAND))
+            self.stand_images.append(all_pics(STANDL, STANDING))
+            self.stand_images.append(all_pics(STANDR, STANDING))
 
-            self.run_images.append(all_pics(RUNL, RUN))
-            self.run_images.append(all_pics(RUNR, RUN))
+            self.run_images.append(all_pics(RUNL, RUNNING))
+            self.run_images.append(all_pics(RUNR, RUNNING))
 
-            self.sword_images.append(all_pics(SWORDL, SWORD))
-            self.sword_images.append(all_pics(SWORDR, SWORD))
+            self.sword_images.append(all_pics(SWORDL, SWORDING_YES))
+            self.sword_images.append(all_pics(SWORDR, SWORDING_YES))
+
+            self.dance_images.append(all_pics(DANCER, DANCING))
 
         self.rect = self.image.get_rect()
         self.rect.x = START_X
@@ -34,9 +37,10 @@ class Player(pygame.sprite.Sprite):
         self.state = ALIVE
         self.hp = MAX_HP
         self.direction = RIGHT
-        self.moving = [0, 0, 0, 0]
+        self.moving = [False, False, False, False, False]
         self.anim_count = 0
         self.speed = PLAYER_SPEED
+        self.fps = FPS
 
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -60,21 +64,21 @@ class Player(pygame.sprite.Sprite):
 
             # If we are moving right,
             # set our right side to the left side of the item we hit
-            if flag and self.moving[RIGHT] == 1:
+            if flag and self.moving[RIGHT]:
                 if self.direction == where:
                     self.rect.y -= STAIRS_HEIGHT
                 # else:
                 #     self.rect.y += STAIRS_HEIGHT
-            if flag and self.moving[LEFT] == 1:
+            if flag and self.moving[LEFT]:
                 print(self.direction, where)
                 if self.direction == where:
                     self.rect.y -= STAIRS_HEIGHT
                 # else:
                 #     self.rect.y += STAIRS_HEIGHT
 
-            if self.moving[RIGHT] == 1:
+            if self.moving[RIGHT]:
                 self.rect.x = self.rect.x - self.speed
-            if self.moving[LEFT] == 1:
+            if self.moving[LEFT]:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.x = self.rect.x + self.speed
 
@@ -95,20 +99,27 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         """ the movement of the player """
-
-        if self.moving[RIGHT] == self.moving[LEFT]:
+        if self.moving[RIGHT] == self.moving[LEFT] and not any(self.moving[3:]):
             self.situation = STANDING
+            self.fps = FPS // 2
 
         else:
 
-            if self.moving[RIGHT] == 1:
+            if self.moving[RIGHT] and not any(self.moving[3:]):
+                self.fps = FPS
                 self.situation = RUNNING
                 self.direction = RIGHT
                 self.rect.x += self.speed
-            if self.moving[LEFT] == 1:
+            # print(not any(self.moving[3:]), self.moving[3:])
+            if self.moving[LEFT] and not any(self.moving[3:]):
+                self.fps = FPS
                 self.situation = RUNNING
                 self.direction = LEFT
                 self.rect.x -= self.speed
+            if self.moving[DANCE]:
+                self.fps = FPS // 2
+                self.direction = LEFT
+                self.situation = DANCING
 
     def render(self):
         """ rendering player """
@@ -118,8 +129,10 @@ class Player(pygame.sprite.Sprite):
             images = self.run_images
         elif self.situation == STANDING:
             images = self.stand_images
-        elif self.situation == SWORDING:
+        elif self.situation == SWORDING_YES:
             images = self.sword_images
+        elif self.situation == DANCING:
+            images = self.dance_images
 
         if self.direction == RIGHT:
             if self.anim_count >= self.situation - 1:

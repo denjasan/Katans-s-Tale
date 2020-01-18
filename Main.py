@@ -83,15 +83,19 @@ class Main:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
-                    self.player.moving[RIGHT] = 1
+                    self.player.moving[RIGHT] = True
                 if event.key == pygame.K_a:
-                    self.player.moving[LEFT] = 1
+                    self.player.moving[LEFT] = True
+                if event.key == pygame.K_w:
+                    self.player.moving[DANCE] = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
-                    self.player.moving[RIGHT] = 0
+                    self.player.moving[RIGHT] = False
                 if event.key == pygame.K_a:
-                    self.player.moving[LEFT] = 0
+                    self.player.moving[LEFT] = False
+                if event.key == pygame.K_w:
+                    self.player.moving[DANCE] = False
 
     def render(self):
         """ rendering everything """
@@ -105,7 +109,7 @@ class Main:
         # player_group.update(self.x, self.area)
         # self.x = 0
         # player_group.draw(self.screen)
-        self.clock.tick(FPS)
+        self.clock.tick(self.player.fps)
         pygame.display.flip()
 
     def start_screen(self):
