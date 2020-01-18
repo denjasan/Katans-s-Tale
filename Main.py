@@ -47,7 +47,7 @@ class Main:
 
         self.clock = pygame.time.Clock()
         self.screen = screen
-        self.stairs_del = None  # which coord we should del
+        self.stairs_del = False  # Have we got stairs in that floor?
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
@@ -99,7 +99,7 @@ class Main:
         all_sprites.update(self.area, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
-        player_group.update(self.area, self.area_x)
+        player_group.update(self.area, self.area_x, self.stairs_del)
         player_group.draw(screen)
 
         # player_group.update(self.x, self.area)
@@ -163,7 +163,7 @@ class Main:
                 self.background = Background(True)
                 self.area_x = AreaX1(True)
                 first_time = False
-                self.stairs_del = (55, 190, LEFT)
+                self.stairs_del = True
             self.render()
             self.handle_events()
             self.camera.update(self.player)

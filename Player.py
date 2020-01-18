@@ -42,12 +42,7 @@ class Player(pygame.sprite.Sprite):
 
         #self.add(all_sprites)
 
-    def update(self, area, area_x, *stairs_del):
-
-        stairs = STAIRS
-
-        for i in stairs_del:
-            del stairs[stairs.index(i)]
+    def update(self, area, area_x, stairs_del=False):
 
         if not pygame.sprite.collide_mask(self, area):
             self.rect = self.rect.move(0, 5)
@@ -55,11 +50,13 @@ class Player(pygame.sprite.Sprite):
         if pygame.sprite.collide_mask(self, area_x):
 
             flag = False
-            for i in stairs:
-                if i[0] <= self.rect.x <= i[1]:
-                    where = i[2]
-                    flag = True
-                    break
+
+            if not stairs_del:
+                for i in STAIRS:
+                    if i[0] <= self.rect.x <= i[1]:
+                        where = i[2]
+                        flag = True
+                        break
 
             # If we are moving right,
             # set our right side to the left side of the item we hit
