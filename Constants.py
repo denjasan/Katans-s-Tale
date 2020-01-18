@@ -3,6 +3,8 @@ FPS = 30
 
 RIGHT = 1
 LEFT = 0
+SWORD = 2
+ROLLING = 3
 
 ALIVE = 0
 ATTACK = 1
@@ -16,8 +18,8 @@ SWORDING = 12
 START_X = 10
 START_Y = 492
 
-STAIRS = ((157, 190, LEFT), (55, 97, LEFT), (730, 990, RIGHT))
-STAIRS_HEIGHT = 30
+STAIRS = ((157, 190, LEFT), (730, 990, RIGHT))
+STAIRS_HEIGHT = 10
 # LEVEL_WIDTH = 1296
 LEVEL_WIDTH = 1000
 LEVEL_HEIGHT = 485
@@ -39,7 +41,11 @@ DANCER = 'data/Zero/EpicDance/'
 DANCE = 12
 SWORDR = 'data/Zero/SwordR/'
 SWORDL = 'data/Zero/SwordL/'
-SWORD = 15
+SWORD_YES = 15
+SWORD_NO = 27
+ROLLR = 'data/Zero/RunR/'
+ROLLL = 'data/Zero/RunL/'
+ROLL = 6
 
 SPACE = 32
 E_HP = 15

@@ -6,23 +6,31 @@ class Camera:
     def __init__(self):
         self.dx = 0
         self.dy = 0
+        self.first_time = True
+        self.second_time = False
 
-    def apply(self, obj):
+    def apply(self, obj, target):
         for i in obj:
             # print(i.rect.x, self.dx, i.rect.x + self.dx)
             if -215 <= i.rect.x + self.dx <= 0:
                 i.rect.x += self.dx
-            # else:
-            #     PLAYER_SPEED *= 2
+            elif self.first_time:
+                target.speed *= 2
+                self.first_time = False
+                self.second_time = True
+            elif self.second_time:
+                target.speed //= 2
+                self.first_time = True
+                self.second_time = False
 
     def update(self, target):
         # print(target.moving)
         self.dx = 0
         if target.moving[LEFT] != target.moving[RIGHT]:
             if target.moving[LEFT] == 1:
-                self.dx = 1 * PLAYER_SPEED
+                self.dx = 1 * target.speed
             if target.moving[RIGHT] == 1:
-                self.dx = -1 * PLAYER_SPEED
+                self.dx = -1 * target.speed
 
         # self.dx = -(target.rect.x + target.rect.w // 2 - 800 // 2)
         # self.dy = -(target.rect.y + target.rect.h // 2 - 600 // 2)

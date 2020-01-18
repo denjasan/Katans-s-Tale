@@ -47,6 +47,7 @@ class Main:
 
         self.clock = pygame.time.Clock()
         self.screen = screen
+        self.stairs_del = None  # which coord we should del
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
@@ -95,7 +96,7 @@ class Main:
     def render(self):
         """ rendering everything """
         self.player.render()
-        all_sprites.update(self.area, self.area_x)
+        all_sprites.update(self.area, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
         player_group.update(self.area, self.area_x)
@@ -144,7 +145,7 @@ class Main:
             if flag:
                 return  # начинаем игру
             pygame.display.flip()
-            time.sleep(13.8)
+            # time.sleep(13.8)
             flag = True
 
     def main_loop(self):
@@ -162,11 +163,12 @@ class Main:
                 self.background = Background(True)
                 self.area_x = AreaX1(True)
                 first_time = False
+                self.stairs_del = (55, 190, LEFT)
             self.render()
             self.handle_events()
             self.camera.update(self.player)
             # for i in fon_group:
-            self.camera.apply(fon_group)
+            self.camera.apply(fon_group, self.player)
             # all_sprites.remove(player_group, self.area_x, self.area)
         terminate()
 

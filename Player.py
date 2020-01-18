@@ -34,14 +34,20 @@ class Player(pygame.sprite.Sprite):
         self.state = ALIVE
         self.hp = MAX_HP
         self.direction = RIGHT
-        self.moving = [0, 0]
+        self.moving = [0, 0, 0, 0]
         self.anim_count = 0
+        self.speed = PLAYER_SPEED
 
         self.mask = pygame.mask.from_surface(self.image)
 
         #self.add(all_sprites)
 
-    def update(self, area, area_x):
+    def update(self, area, area_x, *stairs_del):
+
+        stairs = STAIRS
+
+        for i in stairs_del:
+            del stairs[stairs.index(i)]
 
         if not pygame.sprite.collide_mask(self, area):
             self.rect = self.rect.move(0, 5)
@@ -49,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         if pygame.sprite.collide_mask(self, area_x):
 
             flag = False
-            for i in STAIRS:
+            for i in stairs:
                 if i[0] <= self.rect.x <= i[1]:
                     where = i[2]
                     flag = True
@@ -70,10 +76,10 @@ class Player(pygame.sprite.Sprite):
                 #     self.rect.y += STAIRS_HEIGHT
 
             if self.moving[RIGHT] == 1:
-                self.rect.x = self.rect.x - PLAYER_SPEED
+                self.rect.x = self.rect.x - self.speed
             if self.moving[LEFT] == 1:
                 # Otherwise if we are moving left, do the opposite.
-                self.rect.x = self.rect.x + PLAYER_SPEED
+                self.rect.x = self.rect.x + self.speed
 
         # See if we hit anything
         # block_hit_list = pygame.sprite.spritecollide(self, areaG, False)
@@ -101,11 +107,11 @@ class Player(pygame.sprite.Sprite):
             if self.moving[RIGHT] == 1:
                 self.situation = RUNNING
                 self.direction = RIGHT
-                self.rect.x += PLAYER_SPEED
+                self.rect.x += self.speed
             if self.moving[LEFT] == 1:
                 self.situation = RUNNING
                 self.direction = LEFT
-                self.rect.x -= PLAYER_SPEED
+                self.rect.x -= self.speed
 
     def render(self):
         """ rendering player """
