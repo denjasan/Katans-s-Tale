@@ -2,6 +2,7 @@ import pygame
 
 fon_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 mini_game = pygame.sprite.Group()
 areaG = pygame.sprite.Group()
