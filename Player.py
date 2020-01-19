@@ -74,7 +74,6 @@ class Player(pygame.sprite.Sprite):
                 # else:
                 #     self.rect.y += STAIRS_HEIGHT
             if flag and self.moving[LEFT]:
-                print(self.direction, where)
                 if self.direction == where:
                     self.rect.y -= STAIRS_HEIGHT
                 # else:
@@ -121,7 +120,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction = LEFT
                 self.rect.x -= self.speed
             if self.moving[SWORD]:
-                self.fps = FPS
+                self.fps = FPS // 2
                 if self.first_time:
                     self.rect.y -= 22
                     self.rect.x -= 40
@@ -161,18 +160,30 @@ class Player(pygame.sprite.Sprite):
             self.anim_count = self.anime(images, move_flag, self.anim_count)
 
     def anime(self, images, move_flag, anim_count, move=None):
-        if anim_count >= (self.situation - 1) and move_flag:
+        if anim_count > (self.situation - 1) and move_flag:
             anim_count = 0
 
-        if anim_count < self.situation - 1:
-            self.image = images[self.direction][anim_count]
-            anim_count += 1
-        else:
-            self.rect.y += 22
-            self.rect.x += 40
+        # print(anim_count)
+
+        if anim_count > self.situation - 1:
             self.moving[move] = False
             self.first_time = True
             self.gravity = GRAVITY
+            self.rect.y += 22
+            self.rect.x += 40
+        else:
+            self.image = images[self.direction][anim_count]
+            anim_count += 1
+
+        # if anim_count <= self.situation - 1:
+        #     self.image = images[self.direction][anim_count]
+        #     anim_count += 1
+        # else:
+        #     self.rect.y += 22
+        #     self.rect.x += 40
+        #     self.moving[move] = False
+        #     self.first_time = True
+        #     self.gravity = GRAVITY
 
         return anim_count
 

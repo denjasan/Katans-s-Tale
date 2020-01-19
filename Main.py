@@ -161,6 +161,7 @@ class Main:
 
         first_time = True
         while self.running:
+            self.handle_events()
             self.render()
             if self.player.state != DEAD:
                 self.player.move()
@@ -173,7 +174,6 @@ class Main:
                 self.area_x = AreaX1(True)
                 first_time = False
                 self.stairs_del = True
-            self.handle_events()
             self.camera.update(self.player)
             # for i in fon_group:
             self.camera.apply(fon_group, self.player)
@@ -186,6 +186,6 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(SIZE)
     # screen = pygame.display.set_mode((1920, 1080))
     game = Main(screen)
-    game.main_loop()
+    # game.main_loop()
 
 
