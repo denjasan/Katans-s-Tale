@@ -53,7 +53,7 @@ class Main:
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
-        self.enemy = Enemy('Sardelka', ZERO)
+        self.enemy = Enemy('Sardelka', GIRL)
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()

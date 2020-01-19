@@ -57,4 +57,4 @@ GIRL = 1106
 GIRL_HEIGHT = 74
 GIRL_WIDTH = 69
 
-STANDR = 'data/Girl/StandR/'
+G_PLAY = 'data/Girl/PlayingWithBehemot/'

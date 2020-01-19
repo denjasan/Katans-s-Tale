@@ -13,19 +13,19 @@ class Enemy(pygame.sprite.Sprite):
         self.run_images = []
         self.sword_images = []
         self.dance_images = []
-        if self.player == ZERO:
-            size = (ZERO_HEIGHT, ZERO_WIDTH)
-            self.image = pygame.image.load('data/Zero/StandR/0.gif')
+        if self.player == GIRL:
+            size = (GIRL_HEIGHT, GIRL_WIDTH)
+            self.image = pygame.image.load('data/Girl/PlayingWithBehemot/PlayingWithBehemoth-0.gif')
             self.image = pygame.transform.scale(self.image, size)
 
-            self.stand_images.append(all_pics(STANDL, STANDING, size))
-            self.stand_images.append(all_pics(STANDR, STANDING, size))
+            self.stand_images.append(all_pics(G_PLAY, STANDING, size))
+            self.stand_images.append(all_pics(G_PLAY, STANDING, size))
 
-            self.run_images.append(all_pics(RUNL, RUNNING, size))
-            self.run_images.append(all_pics(RUNR, RUNNING, size))
+            self.run_images.append(all_pics(G_PLAY, RUNNING, size))
+            self.run_images.append(all_pics(G_PLAY, RUNNING, size))
 
-            self.sword_images.append(all_pics(SWORDL, SWORDING_YES, (145, 91)))
-            self.sword_images.append(all_pics(SWORDR, SWORDING_YES, (145, 91)))
+            self.sword_images.append(all_pics(G_PLAY, SWORDING_YES, (145, 91)))
+            self.sword_images.append(all_pics(G_PLAY, SWORDING_YES, (145, 91)))
 
             self.dance_images.append(all_pics(DANCER, DANCING, size))
 
