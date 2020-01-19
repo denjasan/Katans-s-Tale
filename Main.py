@@ -9,6 +9,8 @@ from functions import *
 from game_area import *
 from groups import *
 from Camera import Camera
+from Enemy import Enemy
+
 
 
 class Background(pygame.sprite.Sprite):
@@ -51,6 +53,7 @@ class Main:
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
+        self.enemy = Enemy('Sardelka', ZERO)
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
