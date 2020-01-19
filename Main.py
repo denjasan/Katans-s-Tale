@@ -9,6 +9,7 @@ from functions import *
 from game_area import *
 from groups import *
 from Camera import Camera
+from Enemy import Enemy
 
 
 class Background(pygame.sprite.Sprite):
@@ -44,13 +45,13 @@ class Loading(pygame.sprite.Sprite):
 
 class Main:
     def __init__(self, screen):
-
         self.clock = pygame.time.Clock()
         self.screen = screen
         self.stairs_del = False  # Have we got stairs in that floor?
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
+        self.enemy = Enemy(enemy_group)
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
@@ -106,6 +107,8 @@ class Main:
         self.player.render()
         all_sprites.update(self.area, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
+
+        enemy_group.draw(self.screen)
 
         player_group.update(self.area, self.area_x, self.stairs_del)
         player_group.draw(screen)
@@ -177,6 +180,7 @@ class Main:
             self.camera.update(self.player)
             # for i in fon_group:
             self.camera.apply(fon_group, self.player)
+            self.camera.apply(enemy_group, self.player)
             # all_sprites.remove(player_group, self.area_x, self.area)
         terminate()
 
