@@ -51,7 +51,7 @@ class Main:
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
-        self.enemy = Enemy(enemy_group)
+        self.girl = Enemy(GIRL, x=334, y=330)
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
@@ -180,7 +180,7 @@ class Main:
             self.camera.update(self.player)
             # for i in fon_group:
             self.camera.apply(fon_group, self.player)
-            self.camera.apply(enemy_group, self.player)
+            self.camera.apply(enemy_group, self.player, self.girl.start_pos)
             # all_sprites.remove(player_group, self.area_x, self.area)
         terminate()
 

@@ -9,10 +9,10 @@ class Camera:
         self.first_time = True
         self.second_time = False
 
-    def apply(self, obj, target):
+    def apply(self, obj, target, start_pos=(0, 0)):
         for i in obj:
             # print(i.rect.x, self.dx, i.rect.x + self.dx)
-            if -215 <= i.rect.x + self.dx <= 0:
+            if -215 <= (i.rect.x - start_pos[0]) + self.dx <= 0:
                 i.rect.x += self.dx
             elif self.first_time:
                 target.speed *= 2

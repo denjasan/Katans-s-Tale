@@ -4,22 +4,26 @@ from Constants import *
 from groups import *
 from functions import *
 
-pygame.init()
-size = width, height = 600, 95
-screen = pygame.display.set_mode(size)
-pygame.display.flip()
+# pygame.init()
+# size = width, height = 600, 95
+# screen = pygame.display.set_mode(size)
+# pygame.display.flip()
 
 
 class Enemy(pygame.sprite.Sprite):
-    image = load_image("Girl/PlayingWithBehemot/GirlPlayingWithBehemoth-0.png")
+    def __init__(self, enemy, x, y):
+        super().__init__(enemy_group, all_sprites)
 
-    def __init__(self, group):
-        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
-        super().__init__(group)
-        self.image = Enemy.image
+        if enemy == GIRL:
+            self.image = pygame.image.load("data/Girl/GirlPlayingWithBehemoth/0.gif")
+            self.image = pygame.transform.scale(self.image, (50, 40))
+
         self.rect = self.image.get_rect()
-        self.rect.x = 334
-        self.rect.y = 330
-        self.image = pygame.transform.scale(self.image, (50, 40))
+        self.rect.x = x
+        self.rect.y = y
+
+        self.start_pos = (x, y)
+
+        self.add(all_sprites)
 
 
