@@ -51,7 +51,7 @@ class Main:
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
-        self.girl = Enemy(GIRL, x=334, y=330)
+        self.girl = Enemy(GIRL, x=334, y=330, hp=100)
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
@@ -105,6 +105,7 @@ class Main:
     def render(self):
         """ rendering everything """
         self.player.render()
+        self.girl.render()
         all_sprites.update(self.area, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
