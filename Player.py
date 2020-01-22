@@ -85,6 +85,9 @@ class Player(pygame.sprite.Sprite):
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.x = self.rect.x + self.speed
 
+        if self.situation == SWORDING_NO:
+            pass
+
         # See if we hit anything
         # block_hit_list = pygame.sprite.spritecollide(self, areaG, False)
         # for block in block_hit_list:
@@ -126,6 +129,7 @@ class Player(pygame.sprite.Sprite):
                     self.rect.x -= 40
                     self.gravity = 0
                     self.first_time = False
+                # if self.rect !=
                 self.situation = SWORDING_YES
             elif self.moving[DANCE]:
                 self.fps = FPS // 2
