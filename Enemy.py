@@ -19,7 +19,7 @@ class Enemy(pygame.sprite.Sprite):
         self.sword_images = []
         self.dance_images = []
         if enemy == GIRL:
-            size = (50, 40)
+            size = (GIRL_HEIGHT, GIRL_WIDTH)
             self.image = pygame.image.load("data/Girl/GirlPlayingWithBehemoth/0.gif")
             self.image = pygame.transform.scale(self.image, size)
             self.name = 'Girl'
