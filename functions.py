@@ -7,11 +7,12 @@ from groups import *
 from Constants import *
 
 
-def all_pics(path, n, size, colorkey=None):
+def all_pics(path, n, size=None, colorkey=None):
     images = []
     for i in range(n):
         image = load_image(path[5:] + str(i) + '.gif', colorkey)
-        image = pygame.transform.scale(image, size)
+        if size:
+            image = pygame.transform.scale(image, size)
         images.append(image)
     return images
 

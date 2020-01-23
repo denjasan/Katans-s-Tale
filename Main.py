@@ -29,16 +29,17 @@ class Background(pygame.sprite.Sprite):
 class Fon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
-        self.image = load_image("ZEROposter.jpg")
+        # self.image = load_image("ZEROposter.jpg")
+        self.image = load_image("start_screen/fire/0.gif")
         self.rect = self.image.get_rect()
-        self.rect = -200, 0
+        self.rect = 0, 0  # -200, 0
         self.add(fon_group)
 
 
 class Loading(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
-        self.image = load_image("pause.png")
+        self.image = load_image("Loading/0.gif")
         self.rect = self.image.get_rect()
         self.rect = -200, 0
         self.add(fon_group)
@@ -47,8 +48,33 @@ class Loading(pygame.sprite.Sprite):
 class Main(Levels):
     def __init__(self, screen):
         super().__init__()
-        self.clock = pygame.time.Clock()
         self.screen = screen
+        self.clock = pygame.time.Clock()
+
+        pygame.mixer.init()
+        pygame.mixer.music.load('data/music/start.ogg')
+        pygame.mixer.music.play()
+
+        self.screen.fill((255, 255, 255))
+        self.anim_count = 0
+        self.images = []
+        self.images.append(all_pics(path='data/start_screen/fire/', n=5))
+        self.fon = Fon()
+        self.start_screen()
+        self.fon.kill()
+        self.images = []
+
+        pygame.mixer.music.load('data/music/club.ogg')
+        pygame.mixer.music.play()
+
+        self.anim_count = 0
+        self.images.append(all_pics(path='data/Loading/', n=3))
+        self.pause = Loading()
+        self.loading()
+        self.pause.kill()
+        self.screen.fill((0, 0, 0))
+        self.images = None
+
         self.stairs_del = False  # Have we got stairs in that floor?
         self.running = True
         self.background = Background()
@@ -56,22 +82,6 @@ class Main(Levels):
         self.area = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
-
-        pygame.mixer.init()
-        pygame.mixer.music.load('data/music/start.ogg')
-        pygame.mixer.music.play()
-
-        self.fon = Fon()
-        self.start_screen()
-        self.fon.kill()
-
-        pygame.mixer.music.load('data/music/club.ogg')
-        pygame.mixer.music.play()
-
-        self.pause = Loading()
-        self.loading()
-        self.pause.kill()
-        self.screen.fill((0, 0, 0))
 
         self.main_loop()
 
@@ -124,8 +134,6 @@ class Main(Levels):
     def start_screen(self):
         """ start screen loop """
 
-        all_sprites.draw(self.screen)
-
         intro_text = "PRESS ANY KEY TO START"
         font = pygame.font.Font(None, 40)
         string_rendered = font.render(intro_text, 1, pygame.Color('pink'))
@@ -133,9 +141,25 @@ class Main(Levels):
         text_w = string_rendered.get_width()
         text_h = string_rendered.get_height()
         intro_rect.y = 630
-        intro_rect.x = (WIDTH - text_w) // 2
+        intro_rect.x = 655
         pygame.draw.rect(self.screen, (0, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 0)
-        pygame.draw.rect(self.screen, (255, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
+        pygame.draw.rect(self.screen, pygame.Color('pink'),
+                         (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
+        pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
+        self.screen.blit(string_rendered, intro_rect)
+
+        intro_text = "Тут могла бы быть ваша реклама"
+        font = pygame.font.Font(None, 34)
+        string_rendered = font.render(intro_text, 1, pygame.Color('black'))
+        intro_rect = string_rendered.get_rect()
+        text_w = string_rendered.get_width()
+        text_h = string_rendered.get_height()
+        intro_rect.y = 270
+        intro_rect.x = 655
+        # pygame.draw.rect(self.screen, (0, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 0)
+        pygame.draw.rect(self.screen, pygame.Color('black'),
+                         (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
+        pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
         self.screen.blit(string_rendered, intro_rect)
 
         while True:
@@ -144,22 +168,37 @@ class Main(Levels):
                     terminate()
                 elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     return  # начинаем игру
+            # print(self.images, self.anim_count)
+            if self.anim_count == 4:
+                self.anim_count = 0
+            self.fon.image = self.images[0][self.anim_count]
+            self.anim_count += 1
+
+            all_sprites.draw(self.screen)
             pygame.display.flip()
-            self.clock.tick(FPS)
+            self.clock.tick(FPS // 4)
 
     def loading(self):
-        all_sprites.draw(self.screen)
+        # all_sprites.draw(self.screen)
 
-        flag = False
+        k = 0
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            if flag:
-                return  # начинаем игру
+            if k == 39:
+                time.sleep(0.8)
+                return  # начинаем игру через 13.8 секунд
+
+            if self.anim_count == 3:
+                self.anim_count = 0
+            self.pause.image = self.images[0][self.anim_count]
+            self.anim_count += 1
+            k += 1
+
+            all_sprites.draw(self.screen)
             pygame.display.flip()
-            # time.sleep(13.8)
-            flag = True
+            self.clock.tick(FPS // 10)
 
     def main_loop(self):
         """ main program cycle """
