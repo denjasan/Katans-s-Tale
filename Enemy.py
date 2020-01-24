@@ -12,7 +12,7 @@ from functions import *
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, enemy, x, y, hp):
-        super().__init__(enemy_group, all_sprites)
+        super().__init__(enemy_group)
 
         self.stand_images = []
         self.run_images = []
@@ -45,7 +45,12 @@ class Enemy(pygame.sprite.Sprite):
 
         self.mask = pygame.mask.from_surface(self.image)
 
-        self.add(all_sprites)
+        # self.add(all_sprites)
+
+    def update(self, player, situation):
+        if situation == SWORDING and pygame.sprite.collide_mask(self, player):
+            # print('et')
+            player.situation = SWORDING_YES
 
     def go_render(self, images, sender, move_flag=True, move=None):
         s = images

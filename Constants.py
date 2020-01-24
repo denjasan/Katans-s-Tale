@@ -28,7 +28,7 @@ MAX_HP = 20
 DEFENSE = 1001000
 OFFENSE = 1231231
 
-PLAYER_SPEED = 5
+PLAYER_SPEED = 10  # 5
 
 STANDR = 'data/Zero/StandR/'
 STANDL = 'data/Zero/StandL/'
@@ -40,8 +40,8 @@ DANCER = 'data/Zero/EpicDance/'
 DANCING = 12
 SWORDR = 'data/Zero/SwordR/'
 SWORDL = 'data/Zero/SwordL/'
-SWORDING_YES = 27  # 15
-SWORDING_NO = 27
+SWORDING_YES = 15  # 15
+SWORDING = 27
 ROLLR = 'data/Zero/RunR/'
 ROLLL = 'data/Zero/RunL/'
 ROLLING = 6

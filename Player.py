@@ -24,8 +24,8 @@ class Player(pygame.sprite.Sprite):
             self.run_images.append(all_pics(RUNL, RUNNING, size))
             self.run_images.append(all_pics(RUNR, RUNNING, size))
 
-            self.sword_images.append(all_pics(SWORDL, SWORDING_YES, (145, 91)))
-            self.sword_images.append(all_pics(SWORDR, SWORDING_YES, (145, 91)))
+            self.sword_images.append(all_pics(SWORDL, SWORDING, (145, 91)))
+            self.sword_images.append(all_pics(SWORDR, SWORDING, (145, 91)))
 
             self.dance_images.append(all_pics(DANCER, DANCING, size))
 
@@ -45,17 +45,18 @@ class Player(pygame.sprite.Sprite):
         self.first_time = True
         self.gravity = GRAVITY
         self.last_sender = None
+        self.mini_game = False
 
         self.mask = pygame.mask.from_surface(self.image)
 
         #self.add(all_sprites)
 
-    def update(self, area, area_x, stairs_del=False):
+    def update(self, area_y=None, area_x=None, stairs_del=False, enemy=None):
 
-        if not pygame.sprite.collide_mask(self, area):
+        if area_y and not pygame.sprite.collide_mask(self, area_y):
             self.rect = self.rect.move(0, self.gravity)
 
-        if pygame.sprite.collide_mask(self, area_x):
+        if area_x and pygame.sprite.collide_mask(self, area_x):
 
             flag = False
 
@@ -85,10 +86,11 @@ class Player(pygame.sprite.Sprite):
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.x = self.rect.x + self.speed
 
-        if self.situation == SWORDING_NO:
-            pass
+        if self.situation == SWORDING_YES:
+            if self.anim_count == 15:
+                self.mini_game = True
 
-        # See if we hit anything
+    # See if we hit anything
         # block_hit_list = pygame.sprite.spritecollide(self, areaG, False)
         # for block in block_hit_list:
         #     # If we are moving right,
@@ -129,8 +131,8 @@ class Player(pygame.sprite.Sprite):
                     self.rect.x -= 40
                     self.gravity = 0
                     self.first_time = False
-                # if self.rect !=
-                self.situation = SWORDING_YES
+                if self.situation != SWORDING_YES:
+                    self.situation = SWORDING
             elif self.moving[DANCE]:
                 self.fps = FPS // 2
                 self.direction = LEFT
@@ -153,7 +155,7 @@ class Player(pygame.sprite.Sprite):
             images = self.go_render(self.run_images, self.situation)[0]
         elif self.situation == STANDING:
             images = self.go_render(self.stand_images, self.situation)[0]
-        elif self.situation == SWORDING_YES:
+        elif self.situation == SWORDING or self.situation == SWORDING_YES:
             images, move_flag, move = self.go_render(self.sword_images, self.situation, False, SWORD)
         elif self.situation == DANCING:
             images = self.go_render(self.dance_images, self.situation)[0]

@@ -79,9 +79,10 @@ class Main(Levels):
         self.running = True
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
-        self.area = AreaY1()
+        self.area_y = AreaY1()
         self.area_x = AreaX1()
         self.camera = Camera()
+        # self.MiniGame = MiniGame(self.player)
 
         self.main_loop()
 
@@ -117,12 +118,13 @@ class Main(Levels):
         """ rendering everything """
         self.player.render()
         self.level.render()
-        all_sprites.update(self.area, self.area_x, self.stairs_del)
+        all_sprites.update(self.area_y, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
+        enemy_group.update(self.player, self.player.situation)
         enemy_group.draw(self.screen)
 
-        player_group.update(self.area, self.area_x, self.stairs_del)
+        player_group.update(self.area_y, self.area_x, self.stairs_del)
         player_group.draw(screen)
 
         # player_group.update(self.x, self.area)
@@ -147,6 +149,20 @@ class Main(Levels):
                          (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
         pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
         self.screen.blit(string_rendered, intro_rect)
+
+        # intro_text = "Трасса 6, 8921070096, Ответит Ксения"
+        # font = pygame.font.Font(None, 30)
+        # string_rendered = font.render(intro_text, 1, pygame.Color('black'))
+        # intro_rect = string_rendered.get_rect()
+        # text_w = string_rendered.get_width()
+        # text_h = string_rendered.get_height()
+        # intro_rect.y = 270
+        # intro_rect.x = 655
+        # # pygame.draw.rect(self.screen, (0, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 0)
+        # pygame.draw.rect(self.screen, pygame.Color('black'),
+        #                  (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
+        # pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
+        # self.screen.blit(string_rendered, intro_rect)
 
         intro_text = "Тут могла бы быть ваша реклама"
         font = pygame.font.Font(None, 34)
@@ -186,7 +202,7 @@ class Main(Levels):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            if k == 39:
+            if k == 0:  # 39
                 time.sleep(0.8)
                 return  # начинаем игру через 13.8 секунд
 
@@ -205,15 +221,18 @@ class Main(Levels):
 
         first_time = True
         while self.running:
-            self.handle_events()
+            if self.player.mini_game:
+                print(self.player.anim_count)
+                self.player.mini_game = False
             self.render()
+            self.handle_events()
             if self.player.state != DEAD:
                 self.player.move()
             if self.player.rect.y < SECOND_FLOOR and first_time:
-                self.area.kill()
+                self.area_y.kill()
                 self.background.kill()
                 self.area_x.kill()
-                self.area = AreaY2()
+                self.area_y = AreaY2()
                 self.background = Background(True)
                 self.area_x = AreaX1(True)
                 first_time = False
@@ -223,7 +242,7 @@ class Main(Levels):
             self.camera.apply(fon_group, self.player)
             self.level.applying(self.camera, self.player)
             # self.camera.apply(enemy_group, self.player, self.girl.start_pos)
-            # all_sprites.remove(player_group, self.area_x, self.area)
+            # all_sprites.remove(player_group, self.area_x, self.area_y)
         terminate()
 
 
