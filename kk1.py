@@ -49,7 +49,7 @@ class Heart(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = width // 2
         self.rect.y = height // 2
-        self.Zähler = 1
+        self.Zahler = 1
 
     def update(self, x, y):
         self.rect.x += x
@@ -110,24 +110,11 @@ clock = pygame.time.Clock()
 f = 10
 vector = v / fps
 flag = False
-while s_h > 25:
-    screen.fill((0, 0, 0))
-    player_group.draw(screen)
-    if s_h - f < 25:
-        f = s_h - 25
-    s_h = s_h - f
-    heart.image = pygame.transform.scale(heart.image, (s_h, s_h))
-    heart.rect.x, heart.rect.y = width // 2 - s_h // 2, height // 2 - s_h // 2
-    clock.tick(fps)
-    pygame.display.flip()
-
-heart.rect = heart.image.get_rect()
-heart.rect.x, heart.rect.y = width // 2, height // 2
 
 
 def defense():
     global dx, dy, heart, running, enemy_group
-    if heart.Zähler <= 500:
+    if heart.Zahler <= 500:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -163,7 +150,7 @@ def attack():
         if Constants.E_HP <= 0:
             win()
         else:
-            heart.Zähler = 0
+            heart.Zahler = 0
 
     if flag:
         return
@@ -192,9 +179,10 @@ heart.image = pygame.transform.scale(heart.image, (30, 30))
 for _ in range(10):
     Enemy(enemy_group)
 
-while running:
-    heart.Zähler += 1
-    if heart.Zähler <= 500 and Constants.MAX_HP > 0:
+
+def mini_game():
+    heart.Zahler += 1
+    if heart.Zahler <= 500 and Constants.MAX_HP > 0:
         defense()
     elif Constants.MAX_HP <= 0:
         death()
@@ -202,5 +190,3 @@ while running:
         win()
     else:
         attack()
-
-

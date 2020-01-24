@@ -11,6 +11,7 @@ from groups import *
 from Camera import Camera
 from Enemy import Enemy
 from Levels import Levels
+import MiniGame
 
 
 class Background(pygame.sprite.Sprite):
@@ -84,6 +85,8 @@ class Main(Levels):
         self.camera = Camera()
         # self.MiniGame = MiniGame(self.player)
 
+        self.main_person = MiniGame.MiniGame()
+
         self.main_loop()
 
     def handle_events(self):
@@ -130,6 +133,15 @@ class Main(Levels):
         # player_group.update(self.x, self.area)
         # self.x = 0
         # player_group.draw(self.screen)
+
+        if self.player.mini_game:  # если мини игра работает то мы рисуем одно иначе другое
+            self.screen.fill((0, 0, 0))
+            self.main_person.update()
+            self.main_person.AvailableGroup.draw(self.screen)
+            # v = 50
+            # #self.screen.fill((0, 0, 0))
+            # self.mini_game.update(v / self.player.fps)
+            # self.mini_game.AvailableGroup.draw(self.screen)
         self.clock.tick(self.player.fps)
         pygame.display.flip()
 
@@ -221,28 +233,26 @@ class Main(Levels):
 
         first_time = True
         while self.running:
-            if self.player.mini_game:
-                print(self.player.anim_count)
-                self.player.mini_game = False
             self.render()
             self.handle_events()
-            if self.player.state != DEAD:
-                self.player.move()
-            if self.player.rect.y < SECOND_FLOOR and first_time:
-                self.area_y.kill()
-                self.background.kill()
-                self.area_x.kill()
-                self.area_y = AreaY2()
-                self.background = Background(True)
-                self.area_x = AreaX1(True)
-                first_time = False
-                self.stairs_del = True
-            self.camera.update(self.player)
-            # for i in fon_group:
-            self.camera.apply(fon_group, self.player)
-            self.level.applying(self.camera, self.player)
-            # self.camera.apply(enemy_group, self.player, self.girl.start_pos)
-            # all_sprites.remove(player_group, self.area_x, self.area_y)
+            if not self.player.mini_game:
+                if self.player.state != DEAD:
+                    self.player.move()
+                if self.player.rect.y < SECOND_FLOOR and first_time:
+                    self.area_y.kill()
+                    self.background.kill()
+                    self.area_x.kill()
+                    self.area_y = AreaY2()
+                    self.background = Background(True)
+                    self.area_x = AreaX1(True)
+                    first_time = False
+                    self.stairs_del = True
+                self.camera.update(self.player)
+                # for i in fon_group:
+                self.camera.apply(fon_group, self.player)
+                self.level.applying(self.camera, self.player)
+                # self.camera.apply(enemy_group, self.player, self.girl.start_pos)
+                # all_sprites.remove(player_group, self.area_x, self.area_y)
         terminate()
 
 
@@ -252,5 +262,3 @@ if __name__ == '__main__':
     # screen = pygame.display.set_mode((1920, 1080))
     game = Main(screen)
     # game.main_loop()
-
-

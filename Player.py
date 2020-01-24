@@ -56,6 +56,9 @@ class Player(pygame.sprite.Sprite):
         if area_y and not pygame.sprite.collide_mask(self, area_y):
             self.rect = self.rect.move(0, self.gravity)
 
+        if pygame.sprite.spritecollideany(self, enemy_group):
+            self.mini_game = True
+
         if area_x and pygame.sprite.collide_mask(self, area_x):
 
             flag = False
