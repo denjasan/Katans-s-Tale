@@ -12,6 +12,7 @@ from Camera import Camera
 from Enemy import Enemy
 from Levels import Levels
 import MiniGame
+import Interface
 
 
 class Background(pygame.sprite.Sprite):
@@ -120,7 +121,6 @@ class Main(Levels):
     def render(self):
         """ rendering everything """
         self.player.render()
-        self.level.render()
         all_sprites.update(self.area_y, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
@@ -142,6 +142,7 @@ class Main(Levels):
             # #self.screen.fill((0, 0, 0))
             # self.mini_game.update(v / self.player.fps)
             # self.mini_game.AvailableGroup.draw(self.screen)
+        Interface.render_hp(self.player.hp, self.screen)  # вы выодим на экран self.screen кол-во жизней hp.
         self.clock.tick(self.player.fps)
         pygame.display.flip()
 
