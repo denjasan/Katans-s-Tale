@@ -137,12 +137,14 @@ class Main(Levels):
         if self.player.mini_game:  # если мини игра работает то мы рисуем одно иначе другое
             self.screen.fill((0, 0, 0))
             self.main_person.update()
-            self.main_person.AvailableGroup.draw(self.screen)
+            for i in self.main_person.AvailableGroup:
+                i.draw(self.screen)
+                i.update()
             # v = 50
             # #self.screen.fill((0, 0, 0))
             # self.mini_game.update(v / self.player.fps)
             # self.mini_game.AvailableGroup.draw(self.screen)
-        Interface.render_hp(self.player.hp, self.screen)  # вы выодим на экран self.screen кол-во жизней hp.
+        Interface.render_hp(self.screen)  # вы выодим на экран self.screen кол-во жизней hp.
         self.clock.tick(self.player.fps)
         pygame.display.flip()
 

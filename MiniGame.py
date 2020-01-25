@@ -3,6 +3,8 @@ import random
 import pygame
 from Constants import *
 from functions import *
+from groups import *
+import Values
 
 
 width, height = 1080, 720
@@ -55,15 +57,47 @@ class Heart(pygame.sprite.Sprite):
             pass
 
 
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, group):
+        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
+        super().__init__(group)
+        self.image = pygame.Surface([20, 20])
+        self.image.fill(pygame.Color("white"))
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0, width)
+        self.vx = self.vy = 7
+        self.rect.y = random.randint(0, height)
+
+    def update(self):
+        if pygame.sprite.spritecollideany(self, MG_mp):
+            self.rect.x += random.randint(-100, 100)
+            self.rect.y += random.randint(-100, 100)
+            Values.InstantHP -= 5
+
+        self.rect.x += self.vx
+        if self.rect.x > width:
+            self.rect.x -= width
+        if self.rect.x < 0:
+            self.rect.x += width
+
+        self.rect.y += self.vy
+
+        if self.rect.y > height:
+            self.rect.y -= height
+        if self.rect.y < 0:
+            self.rect.y += height
+
+
 class MiniGame:
     def __init__(self):
         self.status = ATTACK
         self.button_pressed = {"W": 0, "A": 0, "S": 0, "D": 0, "Sp": 0}
-        self.groups_dict = {ATTACK: pygame.sprite.Group(), DEFENSE: pygame.sprite.Group()}
-
+        self.groups_dict = {ATTACK: [MG_mp, MG_e], DEFENSE: MG_d}
+        for i in range(10):
+            Enemy(self.groups_dict[ATTACK][1])
         self.main_person = Heart(self.groups_dict[ATTACK])
 
-        self.AvailableGroup = self.groups_dict[self.status]
+        self.AvailableGroup = [self.groups_dict[self.status]]
 
     def handle_events(self):
         if pygame.key.get_pressed()[32]:

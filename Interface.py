@@ -1,11 +1,13 @@
 import pygame
 import Constants
+import Values
 
 
 width, height = 1080, 720
 
 
-def render_hp(hp, screen):
+def render_hp(screen):
+    hp = Values.InstantHP
     font = pygame.font.Font(None, 30)
     text = font.render("Кол-во жизней: " + str(hp), 1, (100, 255, 100))
     text_x = width - text.get_width() - 10
