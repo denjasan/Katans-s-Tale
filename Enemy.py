@@ -62,7 +62,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def render(self):
         """ rendering player """
-
+        # print(1)
         images = []
         move_flag = True
         if self.situation == RUNNING:

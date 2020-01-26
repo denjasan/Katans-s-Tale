@@ -121,6 +121,7 @@ class Main(Levels):
     def render(self):
         """ rendering everything """
         self.player.render()
+        self.level.render()
         all_sprites.update(self.area_y, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
@@ -164,20 +165,6 @@ class Main(Levels):
                          (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
         pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
         self.screen.blit(string_rendered, intro_rect)
-
-        # intro_text = "Трасса 6, 8921070096, Ответит Ксения"
-        # font = pygame.font.Font(None, 30)
-        # string_rendered = font.render(intro_text, 1, pygame.Color('black'))
-        # intro_rect = string_rendered.get_rect()
-        # text_w = string_rendered.get_width()
-        # text_h = string_rendered.get_height()
-        # intro_rect.y = 270
-        # intro_rect.x = 655
-        # # pygame.draw.rect(self.screen, (0, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 0)
-        # pygame.draw.rect(self.screen, pygame.Color('black'),
-        #                  (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
-        # pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
-        # self.screen.blit(string_rendered, intro_rect)
 
         intro_text = "Тут могла бы быть ваша реклама"
         font = pygame.font.Font(None, 34)

@@ -56,6 +56,11 @@ class Player(pygame.sprite.Sprite):
         if area_y and not pygame.sprite.collide_mask(self, area_y):
             self.rect = self.rect.move(0, self.gravity)
 
+        # if self.situation == SWORDING_YES and self.anim_count == 15:
+        #     print(1)
+        #     self.mini_game = True
+        #     self.anim_count = 0
+
         if pygame.sprite.spritecollideany(self, enemy_group):
             self.mini_game = True
 
@@ -88,10 +93,6 @@ class Player(pygame.sprite.Sprite):
             if self.moving[LEFT]:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.x = self.rect.x + self.speed
-
-        if self.situation == SWORDING_YES:
-            if self.anim_count == 15:
-                self.mini_game = True
 
     # See if we hit anything
         # block_hit_list = pygame.sprite.spritecollide(self, areaG, False)
