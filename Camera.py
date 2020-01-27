@@ -1,5 +1,6 @@
-from Constants import *
+# from Constants
 from functions import *
+import Constants
 
 
 class Camera:
@@ -14,6 +15,7 @@ class Camera:
             # print(i.rect.x, self.dx, i.rect.x + self.dx)
             if -215 <= (i.rect.x - start_pos[0]) + self.dx <= 0:
                 i.rect.x += self.dx
+
             elif self.first_time:
                 target.speed *= 2
                 self.first_time = False
@@ -22,6 +24,11 @@ class Camera:
                 target.speed //= 2
                 self.first_time = True
                 self.second_time = False
+
+        # if Constants.LASER[0] > 0:
+        #     Constants.LASER[0] += self.dx
+        #     Constants.LASER[1] += self.dx
+        #     print(Constants.LASER)
 
     def update(self, target):
         # print(target.moving)

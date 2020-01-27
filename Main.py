@@ -55,7 +55,7 @@ class Main(Levels):
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/start.ogg')
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)
 
         self.screen.fill((255, 255, 255))
         self.anim_count = 0
@@ -67,7 +67,7 @@ class Main(Levels):
         self.images = []
 
         pygame.mixer.music.load('data/music/club.ogg')
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)
 
         self.anim_count = 0
         self.images.append(all_pics(path='data/Loading/', n=3))
@@ -125,6 +125,9 @@ class Main(Levels):
         all_sprites.update(self.area_y, self.area_x, self.stairs_del)
         all_sprites.draw(self.screen)
 
+        laser_group.update(self.player.fps)
+        laser_group.draw(self.screen)
+
         enemy_group.update(self.player, self.player.situation)
         enemy_group.draw(self.screen)
 
@@ -147,6 +150,7 @@ class Main(Levels):
             # self.mini_game.AvailableGroup.draw(self.screen)
         Interface.render_hp(self.screen)  # вы выодим на экран self.screen кол-во жизней hp.
         self.clock.tick(self.player.fps)
+        # self.screen.blit(pygame.image.load('data/laser.png'), (316, 409))
         pygame.display.flip()
 
     def start_screen(self):
@@ -187,6 +191,7 @@ class Main(Levels):
                 elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     return  # начинаем игру
             # print(self.images, self.anim_count)
+            # print(pygame.mixer.music.set_endevent())
             if self.anim_count == 4:
                 self.anim_count = 0
             self.fon.image = self.images[0][self.anim_count]
@@ -239,6 +244,7 @@ class Main(Levels):
                     self.stairs_del = True
                 self.camera.update(self.player)
                 # for i in fon_group:
+                self.camera.apply(laser_group, self.player)
                 self.camera.apply(fon_group, self.player)
                 self.level.applying(self.camera, self.player)
                 # self.camera.apply(enemy_group, self.player, self.girl.start_pos)
