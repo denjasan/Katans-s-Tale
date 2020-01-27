@@ -13,6 +13,7 @@ from Enemy import Enemy
 from Levels import Levels
 import MiniGame
 import Interface
+import Values
 
 
 class Background(pygame.sprite.Sprite):
@@ -138,7 +139,7 @@ class Main(Levels):
         # self.x = 0
         # player_group.draw(self.screen)
 
-        if self.player.mini_game:  # если мини игра работает то мы рисуем одно иначе другое
+        if Values.MINIGAME:  # если мини игра работает то мы рисуем одно иначе другое
             self.screen.fill((0, 0, 0))
             self.main_person.update()
             for i in self.main_person.AvailableGroup:
@@ -230,7 +231,7 @@ class Main(Levels):
         while self.running:
             self.render()
             self.handle_events()
-            if not self.player.mini_game:
+            if not Values.MINIGAME:
                 if self.player.state != DEAD:
                     self.player.move()
                 if self.player.rect.y < SECOND_FLOOR and first_time:

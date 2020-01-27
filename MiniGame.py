@@ -61,11 +61,10 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, group):
         # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
-        self.image = pygame.Surface([20, 20])
-        self.image.fill(pygame.Color("white"))
+        self.image = load_image("shuriken.png")
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, width)
-        self.vx = self.vy = 7
+        self.vx, self.vy = random.randint(5, 15), random.randint(5, 15)
         self.rect.y = random.randint(0, height)
 
     def update(self):
@@ -73,6 +72,7 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.x += random.randint(-100, 100)
             self.rect.y += random.randint(-100, 100)
             Values.InstantHP -= 5
+
 
         self.rect.x += self.vx
         if self.rect.x > width:
@@ -91,9 +91,10 @@ class Enemy(pygame.sprite.Sprite):
 class MiniGame:
     def __init__(self):
         self.status = ATTACK
+        self.zahler = 0
         self.button_pressed = {"W": 0, "A": 0, "S": 0, "D": 0, "Sp": 0}
         self.groups_dict = {ATTACK: [MG_mp, MG_e], DEFENSE: MG_d}
-        for i in range(10):
+        for i in range(15):
             Enemy(self.groups_dict[ATTACK][1])
         self.main_person = Heart(self.groups_dict[ATTACK])
 
@@ -105,18 +106,25 @@ class MiniGame:
 
     def update(self):
         x = y = 0
+        if Values.InstantHP <= 0:
+            self.status = DEAD
+
+        if self.zahler >= 250:
+            self.status = DEFENSE
+
         if self.status == ATTACK:
+            self.zahler += 1
             if self.button_pressed["W"] == 1:
-                self.main_person.rect.y -= 10
+                self.main_person.rect.y -= 7
 
             if self.button_pressed["A"] == 1:
-                self.main_person.rect.x -= 10
+                self.main_person.rect.x -= 7
 
             if self.button_pressed["S"] == 1:
-                self.main_person.rect.y += 10
+                self.main_person.rect.y += 7
 
             if self.button_pressed["D"] == 1:
-                self.main_person.rect.x += 10
+                self.main_person.rect.x += 7
 
             self.main_person.update()
 
@@ -124,7 +132,9 @@ class MiniGame:
             pass
 
         elif self.status == DEAD:
-            pass
+            self.status = ATTACK
+            Values.MINIGAME = False
+            Values.GIRL = False
 
         self.AvailableGroup = self.groups_dict[self.status]
 

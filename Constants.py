@@ -60,5 +60,3 @@ GIRL_WIDTH = 40  # 69
 
 G_PLAY = 'data/Girl/GirlPlayingWithBehemoth/'
 G_PLAYING = 29
-
-MINIGAME = False

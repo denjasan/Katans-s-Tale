@@ -3,6 +3,7 @@ import pygame
 from Constants import *
 from groups import *
 from functions import *
+import Values
 
 
 class Player(pygame.sprite.Sprite):
@@ -61,8 +62,10 @@ class Player(pygame.sprite.Sprite):
         #     self.mini_game = True
         #     self.anim_count = 0
 
-        if pygame.sprite.spritecollideany(self, enemy_group):
+        if pygame.sprite.spritecollideany(self, enemy_group) and Values.GIRL:
             self.mini_game = True
+            Values.MINIGAME = True
+
 
         if area_x and pygame.sprite.collide_mask(self, area_x):
 
