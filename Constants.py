@@ -30,6 +30,7 @@ DEFENSE = 1001000
 OFFENSE = 1231231
 
 PLAYER_SPEED = 10  # 5
+HEART_SPEED = 7
 
 STANDR = 'data/Zero/StandR/'
 STANDL = 'data/Zero/StandL/'

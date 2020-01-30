@@ -102,7 +102,7 @@ class Main(Levels):
         self.camera = Camera()
         # self.MiniGame = MiniGame(self.player)
 
-        self.main_person = MiniGame.MiniGame()
+        self.main_person = MiniGame.MiniGame(self.screen)
 
         self.main_loop()
 

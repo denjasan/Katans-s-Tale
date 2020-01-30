@@ -134,7 +134,7 @@ class Player(pygame.sprite.Sprite):
             if self.moving[SWORD]:
                 self.fps = FPS // 2
                 if self.first_time:
-                    self.rect.y -= 22
+                    self.rect.y -= 21
                     self.rect.x -= 40
                     self.gravity = 0
                     self.first_time = False
@@ -182,8 +182,8 @@ class Player(pygame.sprite.Sprite):
             self.moving[move] = False
             self.first_time = True
             self.gravity = GRAVITY
-            self.rect.y += 22
-            self.rect.x += 40
+            self.rect.y += 21  # 22
+            self.rect.x += 40  # 40
         else:
             self.image = images[self.direction][anim_count]
             anim_count += 1
