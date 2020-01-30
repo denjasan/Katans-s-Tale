@@ -245,7 +245,7 @@ class Main(Levels):
                     self.stairs_del = True
                 self.camera.update(self.player)
                 # for i in fon_group:
-                self.camera.apply(laser_group, self.player)
+                # self.camera.apply(laser_group, self.player)
                 self.camera.apply(fon_group, self.player)
                 self.level.applying(self.camera, self.player)
                 # self.camera.apply(enemy_group, self.player, self.girl.start_pos)

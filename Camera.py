@@ -7,23 +7,36 @@ class Camera:
     def __init__(self):
         self.dx = 0
         self.dy = 0
-        self.first_time = True
-        self.second_time = False
+        # self.first_time = True
+        # self.second_time = False
 
-    def apply(self, obj, target, start_pos=(0, 0)):
-        for i in obj:
-            # print(i.rect.x, self.dx, i.rect.x + self.dx)
+    def apply(self, obj, target, start_pos=(0, 0), many_strart_poses=None):
+
+        # print(target.speed)
+        # if target.speed < PLAYER_SPEED:
+        #     self.first_time = True
+        #     self.second_time = False
+        # elif target.speed > PLAYER_SPEED:
+        #     self.first_time = False
+        #     self.second_time = True
+
+        for k, i in enumerate(obj):
+            if many_strart_poses:
+                start_pos = many_strart_poses[k]
+                print(start_pos)
+            # print(i.rect.x, self.dx, (i.rect.x - start_pos[0]) + self.dx)
             if -215 <= (i.rect.x - start_pos[0]) + self.dx <= 0:
+                # print(i.rect.x, start_pos[0], self.dx, (i.rect.x - start_pos[0]) + self.dx)
                 i.rect.x += self.dx
 
-            elif self.first_time:
-                target.speed *= 2
-                self.first_time = False
-                self.second_time = True
-            elif self.second_time:
-                target.speed //= 2
-                self.first_time = True
-                self.second_time = False
+            # elif self.first_time:
+            #     target.speed *= 2
+            #     self.first_time = False
+            #     self.second_time = True
+            # elif self.second_time:
+            #     target.speed //= 2
+            #     self.first_time = True
+            #     self.second_time = False
 
         # if Constants.LASER[0] > 0:
         #     Constants.LASER[0] += self.dx

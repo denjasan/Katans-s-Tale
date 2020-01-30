@@ -17,7 +17,7 @@ DEAD = 3
 START_X = 10
 START_Y = 492
 
-LASER = [175, 742]  # границы по x 790
+LASER = (175, 742)  # границы по x 790
 STAIRS = ((55, 190, LEFT), (730, 990, RIGHT))
 STAIRS_HEIGHT = 10
 # LEVEL_WIDTH = 1296
