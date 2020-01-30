@@ -1,6 +1,7 @@
 import pygame
 
 fon_group = pygame.sprite.Group()
+first_plan_group = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
