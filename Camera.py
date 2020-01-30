@@ -1,16 +1,18 @@
 # from Constants
 from functions import *
 import Constants
+# from Levels.Levels
 
 
 class Camera:
     def __init__(self):
         self.dx = 0
         self.dy = 0
+        self.go = True
         # self.first_time = True
         # self.second_time = False
 
-    def apply(self, obj, target, start_pos=(0, 0), many_strart_poses=None):
+    def apply(self, obj, target, start_pos=(0, 0), level=None, many_strart_poses=None):
 
         # print(target.speed)
         # if target.speed < PLAYER_SPEED:
@@ -19,15 +21,21 @@ class Camera:
         # elif target.speed > PLAYER_SPEED:
         #     self.first_time = False
         #     self.second_time = True
-
         for k, i in enumerate(obj):
             if many_strart_poses:
                 start_pos = many_strart_poses[k]
-                print(start_pos)
             # print(i.rect.x, self.dx, (i.rect.x - start_pos[0]) + self.dx)
-            if -215 <= (i.rect.x - start_pos[0]) + self.dx <= 0:
+            if -215 <= (i.rect.x - start_pos[0]) + self.dx <= 0 and obj != laser_group:
                 # print(i.rect.x, start_pos[0], self.dx, (i.rect.x - start_pos[0]) + self.dx)
                 i.rect.x += self.dx
+                self.go = True
+            elif self.go and obj == laser_group:
+                i.rect.x += self.dx
+            else:
+                self.go = False
+
+            if obj == laser_group:
+                level.lasers[k] = (i.rect.x, i.rect.y)
 
             # elif self.first_time:
             #     target.speed *= 2

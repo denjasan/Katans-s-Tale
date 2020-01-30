@@ -22,7 +22,7 @@ class Laser(pygame.sprite.Sprite):
     def update(self, fps):
         if self.time >= fps // 2:
             self.time = 0
-            # self.rect.x = randint(LASER[0], LASER[1])
+            self.rect.x = randint(LASER[0], LASER[1])
         self.time += 1
 
 
@@ -30,7 +30,7 @@ class L01:
     def __init__(self):
         self.girl = Enemy(GIRL, x=334, y=330, hp=100)
         self.lasers = []
-        for i in range(20):
+        for i in range(10):
             a = Laser()
             self.lasers.append((a.rect.x, a.rect.y))
 
@@ -39,6 +39,7 @@ class L01:
 
     def applying(self, camera, player):
         camera.apply(enemy_group, player, self.girl.start_pos)
-        for i in range(20):
-            camera.apply(laser_group, player, many_strart_poses=self.lasers)
+        # for i in range(1):
+        #     print(self.lasers)
+        camera.apply(laser_group, player, level=self, many_strart_poses=self.lasers)
 

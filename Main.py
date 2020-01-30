@@ -210,7 +210,7 @@ class Main(Levels):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            if k == 0:  # 39
+            if k == 39:  # 39
                 time.sleep(0.8)
                 return  # начинаем игру через 13.8 секунд
 
