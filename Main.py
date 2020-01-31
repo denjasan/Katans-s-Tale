@@ -29,6 +29,20 @@ class Background(pygame.sprite.Sprite):
         self.add(fon_group)
 
 
+class FirstGround(pygame.sprite.Sprite):
+    def __init__(self, flag=False):
+        super().__init__(first_plan_group)
+        if not flag:
+            self.image = load_image("fon/first_plan1.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = 0
+        else:
+            self.image = load_image("fon/first_plan.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = -215
+        self.rect.y = 117
+
+
 class Fon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
@@ -80,6 +94,7 @@ class Main(Levels):
 
         self.stairs_del = False  # Have we got stairs in that floor?
         self.running = True
+        self.first_ground = FirstGround()  # it will have something when player on 2nd floor
         self.background = Background()
         self.player = Player('Sosiska', ZERO)
         self.area_y = AreaY1()
@@ -87,7 +102,7 @@ class Main(Levels):
         self.camera = Camera()
         # self.MiniGame = MiniGame(self.player)
 
-        self.main_person = MiniGame.MiniGame( )
+        self.main_person = MiniGame.MiniGame(self.screen)
 
         self.main_loop()
 
@@ -134,6 +149,9 @@ class Main(Levels):
 
         player_group.update(self.area_y, self.area_x, self.stairs_del)
         player_group.draw(screen)
+
+        # first_plan_group.update(self.area_y, self.area_x, self.stairs_del)
+        first_plan_group.draw(self.screen)
 
         # player_group.update(self.x, self.area)
         # self.x = 0
@@ -238,15 +256,18 @@ class Main(Levels):
                     self.area_y.kill()
                     self.background.kill()
                     self.area_x.kill()
+                    self.first_ground.kill()
                     self.area_y = AreaY2()
+                    self.first_ground = FirstGround(True)
                     self.background = Background(True)
                     self.area_x = AreaX1(True)
                     first_time = False
                     self.stairs_del = True
                 self.camera.update(self.player)
                 # for i in fon_group:
-                self.camera.apply(laser_group, self.player)
+                # self.camera.apply(laser_group, self.player)a
                 self.camera.apply(fon_group, self.player)
+                self.camera.apply(first_plan_group, self.player)
                 self.level.applying(self.camera, self.player)
                 # self.camera.apply(enemy_group, self.player, self.girl.start_pos)
                 # all_sprites.remove(player_group, self.area_x, self.area_y)
