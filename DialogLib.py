@@ -1,9 +1,10 @@
 import pygame
+import groups
 
 
-class Dialog:
-    def __init__(self, screen, clock, speed, fps):
-        self.screen = screen
+class Dialog(pygame.sprite.Sprite):
+    def __init__(self, group, clock, speed, fps):
+        super().__init__(group)
         self.clock = clock
         self.speed = speed
         self.fps = fps
@@ -17,4 +18,4 @@ class Dialog:
         if my_index < len(text):
             font = pygame.font.Font(None, 30)
             text1 = font.render(text[:my_index], 1, (255, 255, 255))
-            self.screen.blit(text1, (0, 0))
+            text1.add(groups.MG_intro)
