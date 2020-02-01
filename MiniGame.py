@@ -7,6 +7,7 @@ from Constants import *
 from functions import *
 from groups import *
 import Values
+from Dialogs import *
 
 
 width, height = WIDTH, HEIGHT
@@ -14,7 +15,6 @@ width, height = WIDTH, HEIGHT
 
 class Heart(pygame.sprite.Sprite):
     def __init__(self, group):
-        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
         self.image = pygame.transform.scale(load_image("heartv2.0.png"), (30, 30))
@@ -34,26 +34,9 @@ class Heart(pygame.sprite.Sprite):
             self.button_pressed["S"] = True
 
     def update(self):
-        self.handle_events()
-
-        if self.button_pressed["W"]:
-            self.rect.y -= 20
-        if self.button_pressed["A"]:
-            self.rect.x -= 20
-        if self.button_pressed["S"]:
-            self.rect.y += 20
-        if self.button_pressed["D"]:
-            self.rect.x += 20
-
-        if self.rect.x > width:
-            self.rect.x -= width
-        if self.rect.x < 0:
-            self.rect.x += width
-
-        if self.rect.y > height:
-            self.rect.y -= height
-        if self.rect.y < 0:
-            self.rect.y += height
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEMOTION:
+                self.rect.x, self.rect.y = event.pos
 
         if pygame.sprite.spritecollideany(self, enemy_group):
             pass
@@ -61,7 +44,6 @@ class Heart(pygame.sprite.Sprite):
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, group):
-        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
         self.image = load_image("shuriken.png")
         self.rect = self.image.get_rect()
@@ -91,7 +73,6 @@ class Enemy(pygame.sprite.Sprite):
 
 class Katana(pygame.sprite.Sprite):
     def __init__(self, group):
-        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
         self.image = load_image("laser1.png")
         self.rect = self.image.get_rect()
@@ -109,9 +90,16 @@ class Katana(pygame.sprite.Sprite):
             self.rect.x += self.vx
 
 
+class Girl(pygame.sprite.Sprite):
+    def __init__(self, group, path):
+        super().__init__(group)
+        self.image = load_image(path)
+        self.image = pygame.transform.scale(self.image, (WIDTH, HEIGHT))
+        self.rect = self.image.get_rect()
+
+
 class Fon(pygame.sprite.Sprite):
     def __init__(self, group, path):
-        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
         self.image = load_image(path)
         self.image = pygame.transform.scale(self.image, (WIDTH, HEIGHT))
@@ -122,6 +110,7 @@ class MiniGame:
     def __init__(self, screen):
         self.screen = screen
         self.status = ATTACK
+        self.dialog = DialogLib.Dialog(self.screen, 20, FPS)
         self.katana = Katana(MG_d)
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
@@ -144,7 +133,7 @@ class MiniGame:
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 200:
+        if self.zahler >= 50:
             self.status = DEFENSE
 
         if self.status == ATTACK:
@@ -160,18 +149,6 @@ class MiniGame:
 
     def attack(self):
         self.zahler += 1
-        if self.button_pressed["W"]:
-            self.main_person.rect.y -= HEART_SPEED
-
-        if self.button_pressed["A"]:
-            self.main_person.rect.x -= HEART_SPEED
-
-        if self.button_pressed["S"]:
-            self.main_person.rect.y += HEART_SPEED
-
-        if self.button_pressed["D"]:
-            self.main_person.rect.x += HEART_SPEED
-
         self.main_person.update()
 
     def dead(self):
@@ -185,5 +162,7 @@ class MiniGame:
         self.handle_events()
         if self.button_pressed["Sp"]:
             self.katana.stop = True
-        self.katana.update()
-        pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1), int(height * 0.7), int(width * 0.8), 50), 0)
+        if self.dialog.draw_dialog(DEFENSE_DIALOG):
+            self.katana.update()
+            pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
+                                                            int(height * 0.7), int(width * 0.8), 50), 0)
