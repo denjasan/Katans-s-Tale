@@ -2,7 +2,7 @@ import os
 import random
 
 import pygame
-
+import DialogLib
 from Constants import *
 from functions import *
 from groups import *
@@ -17,7 +17,7 @@ class Heart(pygame.sprite.Sprite):
         # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
         super().__init__(group)
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
-        self.image = pygame.transform.scale(load_image("heart.png"), (25, 25))
+        self.image = pygame.transform.scale(load_image("heartv2.0.png"), (30, 30))
         self.rect = self.image.get_rect()
         self.rect.x = width // 2
         self.rect.y = height // 2
@@ -76,7 +76,6 @@ class Enemy(pygame.sprite.Sprite):
             self.kill()
             Values.InstantHP -= 5
 
-
         self.rect.x += self.vx
         if self.rect.x > width:
             self.rect.x -= width
@@ -90,14 +89,46 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.y < 0:
             self.rect.y += height
 
+class Katana(pygame.sprite.Sprite):
+    def __init__(self, group):
+        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
+        super().__init__(group)
+        self.image = load_image("laser1.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = width * 0.1
+        self.vx = 10
+        self.stop = False
+        self.rect.y = HEIGHT * 0.7
+
+    def update(self):
+        if not self.stop:
+            if self.rect.x >= width * 0.9:
+                self.vx = -10
+            elif self.rect.x <= width * 0.1:
+                self.vx = 10
+            self.rect.x += self.vx
+
+
+class Fon(pygame.sprite.Sprite):
+    def __init__(self, group, path):
+        # НЕОБХОДИМО вызвать конструктор родительского класса Sprite. Это очень важно!!!
+        super().__init__(group)
+        self.image = load_image(path)
+        self.image = pygame.transform.scale(self.image, (WIDTH, HEIGHT))
+        self.rect = self.image.get_rect()
+
 
 class MiniGame:
     def __init__(self, screen):
         self.screen = screen
         self.status = ATTACK
+        self.katana = Katana(MG_d)
+        self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
+        self.x = self.y = 0
+        self.fon = load_image("demon_fon.png")
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
-        self.groups_dict = {ATTACK: [MG_mp, MG_e], DEFENSE: MG_d}
+        self.groups_dict = {ATTACK: [MG_mp, MG_fon, MG_e], DEFENSE: [MG_d]}
         for i in range(15):
             Enemy(self.groups_dict[ATTACK][1])
         self.main_person = Heart(self.groups_dict[ATTACK])
@@ -113,35 +144,46 @@ class MiniGame:
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 250:
+        if self.zahler >= 200:
             self.status = DEFENSE
 
         if self.status == ATTACK:
-            self.zahler += 1
-            if self.button_pressed["W"]:
-                self.main_person.rect.y -= HEART_SPEED
-
-            if self.button_pressed["A"]:
-                self.main_person.rect.x -= HEART_SPEED
-
-            if self.button_pressed["S"]:
-                self.main_person.rect.y += HEART_SPEED
-
-            if self.button_pressed["D"]:
-                self.main_person.rect.x += HEART_SPEED
-
-            self.main_person.update()
+            self.attack()
 
         elif self.status == DEFENSE:
-            pass
+            self.defense()
 
         elif self.status == DEAD:
-            self.status = ATTACK
-            self.screen.fill((0, 0, 0))
-            Values.MINIGAME = False
-            Values.GIRL = False
+            self.dead()
 
         self.AvailableGroup = self.groups_dict[self.status]
 
     def attack(self):
-        pass
+        self.zahler += 1
+        if self.button_pressed["W"]:
+            self.main_person.rect.y -= HEART_SPEED
+
+        if self.button_pressed["A"]:
+            self.main_person.rect.x -= HEART_SPEED
+
+        if self.button_pressed["S"]:
+            self.main_person.rect.y += HEART_SPEED
+
+        if self.button_pressed["D"]:
+            self.main_person.rect.x += HEART_SPEED
+
+        self.main_person.update()
+
+    def dead(self):
+        self.status = ATTACK
+        self.screen.fill((0, 0, 0))
+        Values.MINIGAME = False
+        Values.GIRL = False
+
+
+    def defense(self):
+        self.handle_events()
+        if self.button_pressed["Sp"]:
+            self.katana.stop = True
+        self.katana.update()
+        pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1), int(height * 0.7), int(width * 0.8), 50), 0)
