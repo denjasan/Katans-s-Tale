@@ -166,3 +166,4 @@ class MiniGame:
             self.katana.update()
             pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
                                                             int(height * 0.7), int(width * 0.8), 50), 0)
+

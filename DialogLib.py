@@ -31,3 +31,4 @@ class Dialog:
         else:
             text1 = self.font.render(text[:my_index], 1, (255, 255, 255))
             self.screen.blit(text1, (0, 0))
+
