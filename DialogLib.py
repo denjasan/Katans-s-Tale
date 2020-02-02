@@ -10,7 +10,7 @@ class Dialog:
         self.fps = fps
         self.progress = 0
         self.d = True
-        self.font = pygame.font.Font(None, 30)
+        self.font = pygame.font.Font(None, 20)
 
     def draw_dialog(self, text):
         my_value = self.clock.tick(self.fps)
@@ -23,12 +23,15 @@ class Dialog:
         if my_index >= len(text):
             return True
         text01 = text[:my_index]
-        if "\n" in text01:
-            for i in range(len(text01.split("֍"))):
-                print(text01.split("֍")[i])
-                text1 = self.font.render(text01.split("֍")[i], 1, (255, 255, 255))
-                self.screen.blit(text1, (0, i * 30))
-        else:
-            text1 = self.font.render(text[:my_index], 1, (255, 255, 255))
-            self.screen.blit(text1, (0, 0))
-
+        # if "n" in text01:
+        #     for i in range(len(text01.split("n"))):
+        #         print(text01.split("n")[i])
+        #         text1 = self.font.render(text01.split("n")[i], 1, (255, 255, 255))
+        #         self.screen.blit(text1, ((WIDTH - len(text01.split("n")[i]) * 15) // 2, i * 10))
+        # else:
+        #     text1 = self.font.render(text[:my_index], 1, (255, 255, 255))
+        #     self.screen.blit(text1, (0, 0))
+        for i in range(len(text01.split("n"))):
+            ti = text01.split("n")[i]
+            text1 = self.font.render(ti, 1, (255, 255, 255))
+            self.screen.blit(text1, ((WIDTH - (len(ti) * 15 // 2)) // 2, (HEIGHT + i * 30) // 2))

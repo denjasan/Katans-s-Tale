@@ -77,6 +77,7 @@ class Katana(pygame.sprite.Sprite):
         self.image = load_image("laser1.png")
         self.rect = self.image.get_rect()
         self.rect.x = width * 0.1
+        self.sizeX = self.rect[0]
         self.vx = 10
         self.stop = False
         self.rect.y = HEIGHT * 0.7
@@ -84,9 +85,9 @@ class Katana(pygame.sprite.Sprite):
     def update(self):
         if not self.stop:
             if self.rect.x >= width * 0.9:
-                self.vx = -10
+                self.vx = -30
             elif self.rect.x <= width * 0.1:
-                self.vx = 10
+                self.vx = 30
             self.rect.x += self.vx
 
 
@@ -94,8 +95,12 @@ class Girl(pygame.sprite.Sprite):
     def __init__(self, group, path):
         super().__init__(group)
         self.image = load_image(path)
-        self.image = pygame.transform.scale(self.image, (WIDTH, HEIGHT))
+        self.image = pygame.transform.scale(self.image, (200, 200))
         self.rect = self.image.get_rect()
+        self.rect.x = WIDTH // 2 - 100
+        self.rect.y = HEIGHT// 2 - 200
+        self.hp = E_HP
+
 
 
 class Fon(pygame.sprite.Sprite):
@@ -112,13 +117,14 @@ class MiniGame:
         self.status = ATTACK
         self.dialog = DialogLib.Dialog(self.screen, 20, FPS)
         self.katana = Katana(MG_d)
+        self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
         self.x = self.y = 0
         self.fon = load_image("demon_fon.png")
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
         self.groups_dict = {ATTACK: [MG_mp, MG_fon, MG_e], DEFENSE: [MG_d]}
-        for i in range(15):
+        for i in range(30):
             Enemy(self.groups_dict[ATTACK][1])
         self.main_person = Heart(self.groups_dict[ATTACK])
 
@@ -133,8 +139,11 @@ class MiniGame:
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 50:
+        if self.zahler >= 200:
             self.status = DEFENSE
+
+        if self.girl.hp <= 0:
+            self.status = WIN
 
         if self.status == ATTACK:
             self.attack()
@@ -142,8 +151,12 @@ class MiniGame:
         elif self.status == DEFENSE:
             self.defense()
 
+        elif self.status == WIN:
+            self.end()
+
+
         elif self.status == DEAD:
-            self.dead()
+            self.end()
 
         self.AvailableGroup = self.groups_dict[self.status]
 
@@ -151,7 +164,7 @@ class MiniGame:
         self.zahler += 1
         self.main_person.update()
 
-    def dead(self):
+    def end(self):
         self.status = ATTACK
         self.screen.fill((0, 0, 0))
         Values.MINIGAME = False
@@ -162,6 +175,10 @@ class MiniGame:
         self.handle_events()
         if self.button_pressed["Sp"]:
             self.katana.stop = True
+            self.katana.image = pygame.transform.scale(self.katana.image, (2, 4000))
+            self.katana.rect[1] = 0
+            self.girl.hp -= int((WIDTH // 2 - abs(WIDTH // 2 - self.katana.rect.x)) / (WIDTH // 2) * E_HP) + 2
+            self.zahler = 0
         if self.dialog.draw_dialog(DEFENSE_DIALOG):
             self.katana.update()
             pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
