@@ -46,7 +46,6 @@ class FirstGround(pygame.sprite.Sprite):
 class Fon(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__(all_sprites)
-        # self.image = load_image("ZEROposter.jpg")
         self.image = load_image("start_screen/fire/0.gif")
         self.rect = self.image.get_rect()
         self.rect = 0, 0  # -200, 0
@@ -102,7 +101,7 @@ class Main(Levels):
         self.camera = Camera()
         # self.MiniGame = MiniGame(self.player)
 
-        self.main_person = MiniGame.MiniGame(self.screen)
+        self.main_person = MiniGame.MiniGame(self.screen, self.player)
 
         self.main_loop()
 
@@ -131,8 +130,6 @@ class Main(Levels):
                     self.player.moving[LEFT] = False
                 if event.key == pygame.K_w:
                     self.player.moving[DANCE] = False
-                # if event.key == pygame.K_SPACE:
-                #     self.player.moving[SWORD] = True
 
     def render(self):
         """ rendering everything """
@@ -150,12 +147,7 @@ class Main(Levels):
         player_group.update(self.area_y, self.area_x, self.stairs_del)
         player_group.draw(screen)
 
-        # first_plan_group.update(self.area_y, self.area_x, self.stairs_del)
         first_plan_group.draw(self.screen)
-
-        # player_group.update(self.x, self.area)
-        # self.x = 0
-        # player_group.draw(self.screen)
 
         if Values.MINIGAME:  # если мини игра работает то мы рисуем одно иначе другое
             self.screen.fill((0, 0, 0))
@@ -163,13 +155,8 @@ class Main(Levels):
             for i in self.main_person.AvailableGroup:
                 i.draw(self.screen)
                 i.update()
-            # v = 50
-            # #self.screen.fill((0, 0, 0))
-            # self.mini_game.update(v / self.player.fps)
-            # self.mini_game.AvailableGroup.draw(self.screen)
         Interface.render_hp(self.screen)  # вы выодим на экран self.screen кол-во жизней hp.
         self.clock.tick(self.player.fps)
-        # self.screen.blit(pygame.image.load('data/laser.png'), (316, 409))
         pygame.display.flip()
 
     def start_screen(self):
@@ -197,7 +184,6 @@ class Main(Levels):
         text_h = string_rendered.get_height()
         intro_rect.y = 270
         intro_rect.x = 655
-        # pygame.draw.rect(self.screen, (0, 0, 0), (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 0)
         pygame.draw.rect(self.screen, pygame.Color('black'),
                          (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
         pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
@@ -209,8 +195,7 @@ class Main(Levels):
                     terminate()
                 elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                     return  # начинаем игру
-            # print(self.images, self.anim_count)
-            # print(pygame.mixer.music.set_endevent())
+
             if self.anim_count == 4:
                 self.anim_count = 0
             self.fon.image = self.images[0][self.anim_count]
@@ -221,7 +206,6 @@ class Main(Levels):
             self.clock.tick(FPS // 4)
 
     def loading(self):
-        # all_sprites.draw(self.screen)
 
         k = 0
         while True:
@@ -245,13 +229,21 @@ class Main(Levels):
     def main_loop(self):
         """ main program cycle """
 
+        dead_frames = 0
+        dead = False
         first_time = True
+        win = False
         while self.running:
             self.render()
             self.handle_events()
             if not Values.MINIGAME:
-                if self.player.state != DEAD:
-                    self.player.move()
+                self.player.move()
+                if self.player.state == DEAD:
+                    self.player.moving[DIE] = True
+                    if dead_frames >= 6:
+                        dead = True
+                        break
+                    dead_frames += 1
                 if self.player.rect.y < SECOND_FLOOR and first_time:
                     self.area_y.kill()
                     self.background.kill()
@@ -264,14 +256,30 @@ class Main(Levels):
                     first_time = False
                     self.stairs_del = True
                 self.camera.update(self.player)
-                # for i in fon_group:
-                # self.camera.apply(laser_group, self.player)a
                 self.camera.apply(fon_group, self.player)
                 self.camera.apply(first_plan_group, self.player)
                 self.level.applying(self.camera, self.player)
-                # self.camera.apply(enemy_group, self.player, self.girl.start_pos)
-                # all_sprites.remove(player_group, self.area_x, self.area_y)
+
+        if dead:
+            self.death()
+        elif win:
+            self.win()
+
         terminate()
+
+    def death(self):
+        while True:
+            self.screen.fill((0, 0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
+
+    def win(self):
+        while True:
+            self.screen.fill((0, 0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminate()
 
 
 if __name__ == '__main__':

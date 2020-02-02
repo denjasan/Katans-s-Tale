@@ -39,7 +39,5 @@ class L01:
 
     def applying(self, camera, player):
         camera.apply(enemy_group, player, self.girl.start_pos)
-        # for i in range(1):
-        #     print(self.lasers)
         camera.apply(laser_group, player, level=self, many_strart_poses=self.lasers)
 

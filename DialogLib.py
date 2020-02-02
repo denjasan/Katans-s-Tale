@@ -35,3 +35,4 @@ class Dialog:
             ti = text01.split("n")[i]
             text1 = self.font.render(ti, 1, (255, 255, 255))
             self.screen.blit(text1, ((WIDTH - (len(ti) * 15 // 2)) // 2, (HEIGHT + i * 30) // 2))
+

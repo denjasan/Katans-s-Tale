@@ -3,12 +3,16 @@ FPS = 30
 
 GRAVITY = 5
 
+# player.moving
+MOVING_LEN = 6
 RIGHT = 1
 LEFT = 0
 SWORD = 2
 ROLL = 3
 DANCE = 4
+DIE = 5
 
+# player.state  or   MiniGame.status
 ALIVE = 0
 ATTACK = 1
 BATTLE = 2
@@ -48,6 +52,9 @@ SWORDING = 27
 ROLLR = 'data/Zero/RunR/'
 ROLLL = 'data/Zero/RunL/'
 ROLLING = 6
+DIER = 'data/Zero/DieR/'
+DIEL = 'data/Zero/DieL/'
+DIEING = 6
 
 SPACE = 32
 E_HP = 15
