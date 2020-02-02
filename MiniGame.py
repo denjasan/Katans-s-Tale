@@ -53,8 +53,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self):
         if pygame.sprite.spritecollideany(self, MG_mp):
-            # self.rect.x += random.randint(-100, 100)
-            # self.rect.y += random.randint(-100, 100)
             self.kill()
             Values.InstantHP -= 5
 
@@ -70,6 +68,7 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.y -= height
         if self.rect.y < 0:
             self.rect.y += height
+
 
 class Katana(pygame.sprite.Sprite):
     def __init__(self, group):
@@ -98,9 +97,8 @@ class Girl(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (200, 200))
         self.rect = self.image.get_rect()
         self.rect.x = WIDTH // 2 - 100
-        self.rect.y = HEIGHT// 2 - 200
+        self.rect.y = HEIGHT // 2 - 200
         self.hp = E_HP
-
 
 
 class Fon(pygame.sprite.Sprite):
@@ -112,7 +110,9 @@ class Fon(pygame.sprite.Sprite):
 
 
 class MiniGame:
-    def __init__(self, screen):
+    def __init__(self, screen, player):
+
+        self.player = player
         self.screen = screen
         self.status = ATTACK
         self.dialog = DialogLib.Dialog(self.screen, 20, FPS)
@@ -152,10 +152,11 @@ class MiniGame:
             self.defense()
 
         elif self.status == WIN:
+            self.player.state = WIN
             self.end()
 
-
         elif self.status == DEAD:
+            self.player.state = DEAD
             self.end()
 
         self.AvailableGroup = self.groups_dict[self.status]
@@ -169,7 +170,6 @@ class MiniGame:
         self.screen.fill((0, 0, 0))
         Values.MINIGAME = False
         Values.GIRL = False
-
 
     def defense(self):
         self.handle_events()
