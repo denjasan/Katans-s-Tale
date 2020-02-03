@@ -211,12 +211,25 @@ class Main(Levels):
 
     def loading(self):
 
+        def text(color='white'):
+            intro_text = "Тут могла бы быть ваша реклама"
+            font = pygame.font.Font(None, 34)
+            string_rendered = font.render(intro_text, 1, pygame.Color(color))
+            intro_rect = string_rendered.get_rect()
+            text_w = string_rendered.get_width()
+            text_h = string_rendered.get_height()
+            intro_rect.y = 270
+            intro_rect.x = 655
+            pygame.draw.rect(self.screen, pygame.Color(color),
+                             (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
+            self.screen.blit(string_rendered, intro_rect)
+
         k = 0
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            if k == 0:  # 39
+            if k == 39:  # 39
                 time.sleep(0.8)
                 return  # начинаем игру через 13.8 секунд
 
@@ -227,6 +240,7 @@ class Main(Levels):
             k += 1
 
             all_sprites.draw(self.screen)
+            text()
             pygame.display.flip()
             self.clock.tick(FPS // 10)
 
