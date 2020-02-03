@@ -125,7 +125,7 @@ class MiniGame:
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
         self.groups_dict = {ATTACK: [MG_mp, MG_fon, MG_e], DEFENSE: [MG_d]}
         for i in range(30):
-            Enemy(self.groups_dict[ATTACK][1])
+            Enemy(self.groups_dict[ATTACK][2])
         self.main_person = Heart(self.groups_dict[ATTACK])
 
         self.AvailableGroup = [self.groups_dict[self.status]]
@@ -136,10 +136,11 @@ class MiniGame:
 
     def update(self):
         x = y = 0
+        print(self.girl.hp, Values.InstantHP)
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 200:
+        if self.zahler >= 20:
             self.status = DEFENSE
 
         if self.girl.hp <= 0:
@@ -179,6 +180,10 @@ class MiniGame:
             self.katana.rect[1] = 0
             self.girl.hp -= int((WIDTH // 2 - abs(WIDTH // 2 - self.katana.rect.x)) / (WIDTH // 2) * E_HP) + 2
             self.zahler = 0
+            self.groups_dict[ATTACK][2] = pygame.sprite.Group()
+            for i in range(20):
+                Enemy(self.groups_dict[ATTACK][2])
+            self.status = ATTACK
         if self.dialog.draw_dialog(DEFENSE_DIALOG):
             self.katana.update()
             pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
