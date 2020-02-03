@@ -122,6 +122,8 @@ class Main(Levels):
                     self.player.moving[DANCE] = True
                 if event.key == pygame.K_SPACE:
                     self.player.moving[SWORD] = True
+                if event.key == pygame.K_e:
+                    self.player.interaction = True
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
@@ -130,6 +132,8 @@ class Main(Levels):
                     self.player.moving[LEFT] = False
                 if event.key == pygame.K_w:
                     self.player.moving[DANCE] = False
+                if event.key == pygame.K_e:
+                    self.player.interaction = False
 
     def render(self):
         """ rendering everything """

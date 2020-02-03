@@ -168,6 +168,7 @@ class MiniGame:
 
     def end(self):
         self.status = ATTACK
+        self.player.moving = [False] * MOVING_LEN
         self.screen.fill((0, 0, 0))
         Values.MINIGAME = False
         Values.GIRL = False
