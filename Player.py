@@ -52,6 +52,7 @@ class Player(pygame.sprite.Sprite):
         self.last_sender = None
         self.mini_game = False
         self.can_move = True
+        self.interaction = False
 
         self.mask = pygame.mask.from_surface(self.image)
 
@@ -93,6 +94,9 @@ class Player(pygame.sprite.Sprite):
             if self.moving[LEFT]:
                 # Otherwise if we are moving left, do the opposite.
                 self.rect.x = self.rect.x + self.speed
+
+        if self.rect.y < SECOND_FLOOR and ELEVATOR[LEFT] <= self.rect.x <= ELEVATOR[RIGHT] and self.interaction:
+            print(True)
 
     def move(self):
         """ the movement of the player """
