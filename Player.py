@@ -38,6 +38,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = START_X
         self.rect.y = START_Y
 
+        self.endimage = load_image("endgame.png")
+
         self.situation = STANDING
         self.name = name
         self.state = ALIVE
@@ -96,7 +98,8 @@ class Player(pygame.sprite.Sprite):
                 self.rect.x = self.rect.x + self.speed
 
         if self.rect.y < SECOND_FLOOR and ELEVATOR[LEFT] <= self.rect.x <= ELEVATOR[RIGHT] and self.interaction:
-            print(True)
+            Values.END = True
+
 
     def move(self):
         """ the movement of the player """
