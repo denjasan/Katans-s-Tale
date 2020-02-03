@@ -100,7 +100,6 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y < SECOND_FLOOR and ELEVATOR[LEFT] <= self.rect.x <= ELEVATOR[RIGHT] and self.interaction:
             Values.END = True
 
-
     def move(self):
         """ the movement of the player """
 

@@ -61,6 +61,17 @@ class Loading(pygame.sprite.Sprite):
         self.add(fon_group)
 
 
+class Ending(pygame.sprite.Sprite):
+    def __init__(self, win):
+        super().__init__(all_sprites)
+        if win:
+            self.image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
+        else:
+            self.image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
+        self.rect = self.image.get_rect()
+        self.rect = 0, 0
+
+
 class Main(Levels):
     def __init__(self, screen):
         super().__init__()
@@ -68,6 +79,7 @@ class Main(Levels):
         self.clock = pygame.time.Clock()
 
         self.end_image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
+        self.end = None
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/start.ogg')
@@ -165,7 +177,8 @@ class Main(Levels):
         self.clock.tick(self.player.fps)
 
         if Values.END:
-            self.end_image.blit(self.screen, (0, 0))
+            # self.end_image.blit(self.screen, (0, 0))
+            self.running = False
             print(123321)
         pygame.display.flip()
 
@@ -235,7 +248,7 @@ class Main(Levels):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            if k == 39:  # 39
+            if k == 0:  # 39
                 time.sleep(0.8)
                 return  # начинаем игру через 13.8 секунд
 
@@ -250,14 +263,13 @@ class Main(Levels):
             pygame.display.flip()
             self.clock.tick(FPS // 10)
 
-
     def main_loop(self):
         """ main program cycle """
 
         dead_frames = 0
         dead = False
         first_time = True
-        win = False
+        # win = False
         while self.running:
             self.render()
             self.handle_events()
@@ -287,24 +299,30 @@ class Main(Levels):
 
         if dead:
             self.death()
-        elif win:
+        else:
             self.win()
 
         terminate()
 
     def death(self):
+        end = Ending(win=False)
         while True:
-            self.screen.fill((0, 0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
+            all_sprites.draw(self.screen)
+            pygame.display.flip()
+            self.clock.tick(FPS // 4)
 
     def win(self):
+        end = Ending(win=True)
         while True:
-            self.screen.fill((0, 0, 0))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
+            all_sprites.draw(self.screen)
+            pygame.display.flip()
+            self.clock.tick(FPS // 4)
 
 
 if __name__ == '__main__':
