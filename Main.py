@@ -67,6 +67,8 @@ class Main(Levels):
         self.screen = screen
         self.clock = pygame.time.Clock()
 
+        self.end_image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
+
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/start.ogg')
         pygame.mixer.music.play(-1)
@@ -161,6 +163,10 @@ class Main(Levels):
                 i.update()
         Interface.render_hp(self.screen)  # вы выодим на экран self.screen кол-во жизней hp.
         self.clock.tick(self.player.fps)
+
+        if Values.END:
+            self.end_image.blit(self.screen, (0, 0))
+            print(123321)
         pygame.display.flip()
 
     def start_screen(self):
@@ -229,6 +235,7 @@ class Main(Levels):
             all_sprites.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(FPS // 10)
+
 
     def main_loop(self):
         """ main program cycle """
