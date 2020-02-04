@@ -152,9 +152,6 @@ class Main(Levels):
             if event.type == pygame.QUIT:
                 self.running = False
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print(event.pos)
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
                     self.player.moving[RIGHT] = True
@@ -207,7 +204,6 @@ class Main(Levels):
         if Values.END:
             # self.end_image.blit(self.screen, (0, 0))
             self.running = False
-            print(123321)
         pygame.display.flip()
 
     def start_screen(self):
@@ -357,8 +353,6 @@ class Main(Levels):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    print(event.pos)
             self.screen.fill((0, 0, 0))
             for i in range(10000):
                 self.screen.fill((255, 255, 255), ((randrange(120, 920), randrange(80, 620)), (5, 5)))

@@ -73,7 +73,7 @@ class Enemy(pygame.sprite.Sprite):
 class Katana(pygame.sprite.Sprite):
     def __init__(self, group):
         super().__init__(group)
-        self.image = load_image("laser1.png")
+        self.image = load_image("katana.png")
         self.rect = self.image.get_rect()
         self.rect.x = width * 0.1
         self.sizeX = self.rect[0]
@@ -116,7 +116,6 @@ class MiniGame:
         self.screen = screen
         self.status = ATTACK
         self.dialog = DialogLib.Dialog(self.screen, 20, FPS)
-        self.katana = Katana(MG_d)
         self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
@@ -140,7 +139,7 @@ class MiniGame:
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 200:
+        if self.zahler >= 20:
             self.status = DEFENSE
 
         if self.girl.hp <= 0:
@@ -186,6 +185,7 @@ class MiniGame:
                 Enemy(self.groups_dict[ATTACK][2])
             self.status = ATTACK
         if self.dialog.draw_dialog(DEFENSE_DIALOG):
+            self.katana = Katana(MG_d)
             self.katana.update()
             pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
                                                             int(height * 0.7), int(width * 0.8), 50), 0)
