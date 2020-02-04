@@ -14,11 +14,13 @@ from Levels import Levels
 import MiniGame
 import Interface
 import Values
+from random import randrange
+import groups
 
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, flag=False):
-        super().__init__(all_sprites)
+        super().__init__(groups.all_sprites)
         self.image = load_image("ClubNeon.png")
         self.rect = self.image.get_rect()
         if not flag:
@@ -45,7 +47,7 @@ class FirstGround(pygame.sprite.Sprite):
 
 class Fon(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__(all_sprites)
+        super().__init__(groups.all_sprites)
         self.image = load_image("start_screen/fire/0.gif")
         self.rect = self.image.get_rect()
         self.rect = 0, 0  # -200, 0
@@ -54,7 +56,7 @@ class Fon(pygame.sprite.Sprite):
 
 class Loading(pygame.sprite.Sprite):
     def __init__(self):
-        super().__init__(all_sprites)
+        super().__init__(groups.all_sprites)
         self.image = load_image("Loading/0.gif")
         self.rect = self.image.get_rect()
         self.rect = -200, 0
@@ -62,8 +64,9 @@ class Loading(pygame.sprite.Sprite):
 
 
 class Ending(pygame.sprite.Sprite):
-    def __init__(self, win):
-        super().__init__(all_sprites)
+    def __init__(self, win, screen):
+        super().__init__(groups.all_sprites)
+        self.screen = screen
         if win:
             self.image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
         else:
@@ -79,7 +82,6 @@ class Main(Levels):
         self.clock = pygame.time.Clock()
 
         self.end_image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
-        self.end = None
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/start.ogg')
@@ -153,8 +155,8 @@ class Main(Levels):
         """ rendering everything """
         self.player.render()
         self.level.render()
-        all_sprites.update(self.area_y, self.area_x, self.stairs_del)
-        all_sprites.draw(self.screen)
+        groups.all_sprites.update(self.area_y, self.area_x, self.stairs_del)
+        groups.all_sprites.draw(self.screen)
 
         laser_group.update(self.player.fps)
         laser_group.draw(self.screen)
@@ -224,7 +226,7 @@ class Main(Levels):
             self.fon.image = self.images[0][self.anim_count]
             self.anim_count += 1
 
-            all_sprites.draw(self.screen)
+            groups.all_sprites.draw(self.screen)
             pygame.display.flip()
             self.clock.tick(FPS // 4)
 
@@ -258,7 +260,7 @@ class Main(Levels):
             self.anim_count += 1
             k += 1
 
-            all_sprites.draw(self.screen)
+            groups.all_sprites.draw(self.screen)
             text()
             pygame.display.flip()
             self.clock.tick(FPS // 10)
@@ -299,28 +301,39 @@ class Main(Levels):
 
         if dead:
             self.death()
+            print(1)
+
         else:
             self.win()
 
         terminate()
 
     def death(self):
-        end = Ending(win=False)
+        groups.all_sprites = pygame.sprite.Group()
+        end = Ending(win=False, screen=self.screen)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            all_sprites.draw(self.screen)
+            groups.all_sprites.draw(self.screen)
+            groups.all_sprites.update()
             pygame.display.flip()
             self.clock.tick(FPS // 4)
 
     def win(self):
-        end = Ending(win=True)
+        groups.all_sprites = pygame.sprite.Group()
+        end = Ending(win=True, screen=self.screen)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            all_sprites.draw(self.screen)
+            self.screen.fill((0, 0, 0))
+            for i in range(10000):
+                self.screen.fill((255, 255, 255), ((randrange(WIDTH), randrange(HEIGHT)), (5, 5)))
+            groups.all_sprites.draw(self.screen)
+            for i in groups.all_sprites:
+                print(i)
+            groups.all_sprites.update()
             pygame.display.flip()
             self.clock.tick(FPS // 4)
 

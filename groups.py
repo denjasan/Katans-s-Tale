@@ -10,6 +10,7 @@ areaG = pygame.sprite.Group()
 areaGX = pygame.sprite.Group()
 laser_group = pygame.sprite.Group()
 dance_group = pygame.sprite.Group()
+noize_group = pygame.sprite.Group()
 
 MG_mp, MG_e, MG_d, MG_fon = pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group()
 MG_katana, MG_katana_fon, MG_katana_e = pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group()
