@@ -6,6 +6,7 @@ import DialogLib
 from Constants import *
 from functions import *
 from groups import *
+import groups
 import Values
 from Dialogs import *
 
@@ -115,7 +116,7 @@ class MiniGame:
         self.player = player
         self.screen = screen
         self.status = ATTACK
-        self.dialog = DialogLib.Dialog(self.screen, 20, FPS)
+        self.dialog = DialogLib.Dialog(self.screen, 10, FPS)
         self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
@@ -185,8 +186,9 @@ class MiniGame:
                 Enemy(self.groups_dict[ATTACK][2])
             self.status = ATTACK
         if self.dialog.draw_dialog(DEFENSE_DIALOG):
-            self.katana = Katana(MG_d)
+            self.katana = Katana(groups.MG_d)
             self.katana.update()
             pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
                                                             int(height * 0.7), int(width * 0.8), 50), 0)
+            groups.MG_d = pygame.sprite.Group()
 
