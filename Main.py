@@ -75,6 +75,32 @@ class Ending(pygame.sprite.Sprite):
         self.rect = 0, 0
 
 
+class Button(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__(groups.all_sprites)
+        self.image = pygame.Surface([400, 50])
+        self.image.fill((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.x, self.y = x, y
+        self.rect = [x, y]
+
+    def update(self):
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.pos[0] - self.x <= 400 and event.pos[1] - self.y <= 50:
+                    terminate()
+
+
+
+class ButtonText(pygame.sprite.Sprite):
+    def __init__(self, x, y, text):
+        super().__init__(groups.all_sprites)
+        self.font = pygame.font.Font(None, 50)
+        self.image = self.font.render(text, 1, (255, 255, 255))
+        self.rect = self.image.get_rect()
+        self.rect = [x, y]
+
+
 class Main(Levels):
     def __init__(self, screen):
         super().__init__()
@@ -301,7 +327,6 @@ class Main(Levels):
 
         if dead:
             self.death()
-            print(1)
 
         else:
             self.win()
@@ -311,6 +336,7 @@ class Main(Levels):
     def death(self):
         groups.all_sprites = pygame.sprite.Group()
         end = Ending(win=False, screen=self.screen)
+        self.buttons = [Button(0, 0), Button(0, 100), Button(0, 200)]
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -323,13 +349,19 @@ class Main(Levels):
     def win(self):
         groups.all_sprites = pygame.sprite.Group()
         end = Ending(win=True, screen=self.screen)
+        self.buttons = [Button(300, 200), Button(300, 350), Button(300, 500)]
+        self.buttonstext = [ButtonText(300, 200, "Выход из игры"),
+                            ButtonText(300, 350, "Все уровни"),
+                            ButtonText(300, 500, "Настройки")]
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    print(event.pos)
             self.screen.fill((0, 0, 0))
             for i in range(10000):
-                self.screen.fill((255, 255, 255), ((randrange(WIDTH), randrange(HEIGHT)), (5, 5)))
+                self.screen.fill((255, 255, 255), ((randrange(120, 920), randrange(80, 620)), (5, 5)))
             groups.all_sprites.draw(self.screen)
             groups.all_sprites.update()
             pygame.display.flip()

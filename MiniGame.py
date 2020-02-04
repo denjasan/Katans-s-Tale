@@ -140,7 +140,7 @@ class MiniGame:
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 20:
+        if self.zahler >= 200:
             self.status = DEFENSE
 
         if self.girl.hp <= 0:
