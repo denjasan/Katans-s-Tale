@@ -150,7 +150,7 @@ class Main(Levels):
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                terminate()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_d:
