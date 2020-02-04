@@ -18,7 +18,7 @@ class Dialog:
             self.progress -= my_value
             self.d = False
         self.progress += my_value
-        my_index = self.progress // 200
+        my_index = self.progress // (self.speed * 10)
 
         if my_index >= len(text):
             return True
