@@ -331,8 +331,6 @@ class Main(Levels):
             for i in range(10000):
                 self.screen.fill((255, 255, 255), ((randrange(WIDTH), randrange(HEIGHT)), (5, 5)))
             groups.all_sprites.draw(self.screen)
-            for i in groups.all_sprites:
-                print(i)
             groups.all_sprites.update()
             pygame.display.flip()
             self.clock.tick(FPS // 4)
