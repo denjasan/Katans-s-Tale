@@ -295,6 +295,7 @@ class Main(Levels):
         first_time = True
         # win = False
         while self.running:
+            self.screen.fill((0, 0, 0))
             self.render()
             self.handle_events()
             if not Values.MINIGAME:
@@ -332,11 +333,18 @@ class Main(Levels):
     def death(self):
         groups.all_sprites = pygame.sprite.Group()
         end = Ending(win=False, screen=self.screen)
-        self.buttons = [Button(0, 0), Button(0, 100), Button(0, 200)]
+        self.buttons = [Button(300, 200), Button(300, 350), Button(300, 500)]
+        self.buttonstext = [ButtonText(300, 200, "Выход из игры"),
+                            ButtonText(300, 350, "Все уровни"),
+                            ButtonText(300, 500, "Настройки")]
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
+                self.buttons[0].update()
+            self.screen.fill((0, 0, 0))
+            for i in range(10000):
+                self.screen.fill((255, 255, 255), ((randrange(120, 920), randrange(80, 620)), (5, 5)))
             groups.all_sprites.draw(self.screen)
             groups.all_sprites.update()
             pygame.display.flip()
@@ -353,6 +361,7 @@ class Main(Levels):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
+                self.buttons[0].update()
             self.screen.fill((0, 0, 0))
             for i in range(10000):
                 self.screen.fill((255, 255, 255), ((randrange(120, 920), randrange(80, 620)), (5, 5)))

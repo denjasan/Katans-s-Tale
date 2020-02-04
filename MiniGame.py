@@ -78,15 +78,16 @@ class Katana(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = width * 0.1
         self.sizeX = self.rect[0]
-        self.vx = 10
+        self.vx = 30
         self.stop = False
-        self.rect.y = HEIGHT * 0.7
+        self.rect.y = HEIGHT * 0.1
 
     def update(self):
         if not self.stop:
-            if self.rect.x >= width * 0.9:
+            print(self.rect.x)
+            if self.rect.x >= 800:
                 self.vx = -30
-            elif self.rect.x <= width * 0.1:
+            elif self.rect.x <= -10:
                 self.vx = 30
             self.rect.x += self.vx
 
@@ -116,7 +117,7 @@ class MiniGame:
         self.player = player
         self.screen = screen
         self.status = ATTACK
-        self.dialog = DialogLib.Dialog(self.screen, 10, FPS)
+        self.dialog = DialogLib.Dialog(self.screen, 1, FPS)
         self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
