@@ -111,7 +111,7 @@ class Fon(pygame.sprite.Sprite):
 
 class MiniGame:
     def __init__(self, screen, player):
-
+        self.katana = False
         self.player = player
         self.screen = screen
         self.status = ATTACK
@@ -174,7 +174,7 @@ class MiniGame:
 
     def defense(self):
         self.handle_events()
-        if self.button_pressed["Sp"]:
+        if self.button_pressed["Sp"] and self.katana:
             self.katana.stop = True
             self.katana.image = pygame.transform.scale(self.katana.image, (2, 4000))
             self.katana.rect[1] = 0
