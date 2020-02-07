@@ -75,6 +75,7 @@ class Katana(pygame.sprite.Sprite):
     def __init__(self, group):
         super().__init__(group)
         self.image = load_image("katana.png")
+        self.image = pygame.transform.flip(self.image, 1, 0)
         self.rect = self.image.get_rect()
         self.rect.x = width * 0.1
         self.sizeX = self.rect[0]
@@ -87,8 +88,10 @@ class Katana(pygame.sprite.Sprite):
             print("self.rect.x:\t", self.rect.x)
             if self.rect.x >= 800:
                 self.vx = -30
+                self.image = pygame.transform.flip(self.image, 1, 0)
             elif self.rect.x <= -10:
                 self.vx = 30
+                self.image = pygame.transform.flip(self.image, 1, 0)
             self.rect.x += self.vx
 
 
