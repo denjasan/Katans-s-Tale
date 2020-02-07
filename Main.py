@@ -108,6 +108,7 @@ class Main(Levels):
         self.clock = pygame.time.Clock()
 
         self.end_image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
+        self.designations = load_image("Обозначения клавиш1.png")
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/start.ogg')
@@ -249,6 +250,7 @@ class Main(Levels):
             self.anim_count += 1
 
             groups.all_sprites.draw(self.screen)
+            self.screen.blit(self.designations, (695, 312))
             pygame.display.flip()
             self.clock.tick(FPS // 4)
 

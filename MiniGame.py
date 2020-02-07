@@ -19,6 +19,7 @@ class Heart(pygame.sprite.Sprite):
         super().__init__(group)
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
         self.image = pygame.transform.scale(load_image("heartv2.0.png"), (30, 30))
+        self.size = 3000
         self.rect = self.image.get_rect()
         self.rect.x = width // 2
         self.rect.y = height // 2
@@ -120,7 +121,7 @@ class MiniGame:
         self.player = player
         self.screen = screen
         self.status = ATTACK
-        self.dialog = DialogLib.Dialog(self.screen, 2, FPS)
+        self.dialog = DialogLib.Dialog(self.screen, 10, FPS)
         self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
@@ -139,13 +140,18 @@ class MiniGame:
         if pygame.key.get_pressed()[32]:
             self.button_pressed["Sp"] = True
 
+    def introA(self):
+        s = self.main_person.size
+        self.screen.blit(pygame.transform.scale(self.main_person.image, (s, s)), ((width - s) // 2, (height - s) // 2))
+        self.main_person.size -= 10
+
     def update(self):
         x = y = 0
         print("self.girl.hp:\t", self.girl.hp, "Values.InstantHP\t", Values.InstantHP)
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 200:
+        elif self.zahler >= 100:
             #self.first_attack = False
             self.status = DEFENSE
 
