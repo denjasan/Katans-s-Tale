@@ -120,7 +120,7 @@ class MiniGame:
         self.player = player
         self.screen = screen
         self.status = ATTACK
-        self.dialog = DialogLib.Dialog(self.screen, 1, FPS)
+        self.dialog = DialogLib.Dialog(self.screen, 2, FPS)
         self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
@@ -128,7 +128,7 @@ class MiniGame:
         self.fon = load_image("demon_fon.png")
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
         self.groups_dict = {ATTACK: [MG_mp, MG_fon, MG_e], DEFENSE: [MG_d], INTRO: [MG_intro]}
-        for i in range(10):
+        for i in range(30):
             Enemy(self.groups_dict[ATTACK][2])
         self.main_person = Heart(self.groups_dict[ATTACK])
 
