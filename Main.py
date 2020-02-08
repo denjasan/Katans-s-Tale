@@ -79,7 +79,7 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__(groups.all_sprites)
         self.image = pygame.Surface([400, 50])
-        self.image.fill((0, 0, 0))
+        self.image.fill((100, 0, 100))
         self.rect = self.image.get_rect()
         self.x, self.y = x, y
         self.rect = [x, y]
