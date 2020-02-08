@@ -1,3 +1,4 @@
+# encoding: utf-8
 import os
 import time
 
@@ -108,7 +109,7 @@ class Main(Levels):
         self.clock = pygame.time.Clock()
 
         self.end_image = pygame.transform.scale(load_image("endgame.png"), (WIDTH, HEIGHT))
-        self.designations = load_image("Обозначения клавиш1.png")
+        self.designations = load_image("key_designation.png")
 
         pygame.mixer.init()
         pygame.mixer.music.load('data/music/start.ogg')

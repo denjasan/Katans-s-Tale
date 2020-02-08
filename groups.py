@@ -1,3 +1,4 @@
+# encoding: utf-8
 import pygame
 
 fon_group = pygame.sprite.Group()

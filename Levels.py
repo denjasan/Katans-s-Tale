@@ -1,3 +1,4 @@
+# encoding: utf-8
 import pygame
 from random import randint, choice
 
@@ -28,7 +29,7 @@ class Laser(pygame.sprite.Sprite):
 
 class L01:
     def __init__(self):
-        self.girl = Enemy(GIRL, x=546, y=332, hp=100)  # 334 330
+        self.girl = Enemy(GIRL, x=546, y=332, hp=E_HP)
         self.lasers = []
         for i in range(10):
             a = Laser()

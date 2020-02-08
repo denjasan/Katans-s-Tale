@@ -1,3 +1,4 @@
+# encoding: utf-8
 SIZE = WIDTH, HEIGHT = 1080, 720
 FPS = 30
 
