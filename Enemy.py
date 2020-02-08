@@ -3,6 +3,7 @@ import pygame
 from Constants import *
 from groups import *
 from functions import *
+import Values
 
 # pygame.init()
 # size = width, height = 600, 95
@@ -48,9 +49,9 @@ class Enemy(pygame.sprite.Sprite):
         # self.add(all_sprites)
 
     def update(self, player, situation):
-        if situation == SWORDING and pygame.sprite.collide_mask(self, player):
-            # print('et')
-            player.situation = SWORDING_YES
+        if pygame.sprite.spritecollideany(self, player_group) and Values.GIRL:
+            self.mini_game = True
+            Values.MINIGAME = True
 
     def go_render(self, images, sender, move_flag=True, move=None):
         s = images

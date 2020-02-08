@@ -87,9 +87,9 @@ class Button(pygame.sprite.Sprite):
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
+                print(event.pos)
                 if event.pos[0] - self.x <= 400 and event.pos[1] - self.y <= 50:
                     terminate()
-
 
 
 class ButtonText(pygame.sprite.Sprite):
@@ -144,7 +144,7 @@ class Main(Levels):
         self.camera = Camera()
         # self.MiniGame = MiniGame(self.player)
 
-        self.main_person = MiniGame.MiniGame(self.screen, self.player)
+        self.main_person = MiniGame.MiniGame(self.screen, self.player, self)
 
         self.main_loop()
 
@@ -224,18 +224,7 @@ class Main(Levels):
         pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
         self.screen.blit(string_rendered, intro_rect)
 
-        intro_text = "Тут могла бы быть ваша реклама"
-        font = pygame.font.Font(None, 34)
-        string_rendered = font.render(intro_text, 1, pygame.Color('black'))
-        intro_rect = string_rendered.get_rect()
-        text_w = string_rendered.get_width()
-        text_h = string_rendered.get_height()
-        intro_rect.y = 270
-        intro_rect.x = 655
-        pygame.draw.rect(self.screen, pygame.Color('black'),
-                         (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
-        pygame.draw.rect(self.screen, (0, 0, 0), (601, 0, 1, 720), 0)
-        self.screen.blit(string_rendered, intro_rect)
+        self.text('black', pos=(655, 270))
 
         while True:
             for event in pygame.event.get():
@@ -256,25 +245,12 @@ class Main(Levels):
 
     def loading(self):
 
-        def text(color='white'):
-            intro_text = "Тут могла бы быть ваша реклама"
-            font = pygame.font.Font(None, 34)
-            string_rendered = font.render(intro_text, 1, pygame.Color(color))
-            intro_rect = string_rendered.get_rect()
-            text_w = string_rendered.get_width()
-            text_h = string_rendered.get_height()
-            intro_rect.y = 270
-            intro_rect.x = 655
-            pygame.draw.rect(self.screen, pygame.Color(color),
-                             (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), 1)
-            self.screen.blit(string_rendered, intro_rect)
-
         k = 0
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     terminate()
-            if k == 0:  # 39
+            if k == 39:  # 39
                 time.sleep(0.8)
                 return  # начинаем игру через 13.8 секунд
 
@@ -285,7 +261,7 @@ class Main(Levels):
             k += 1
 
             groups.all_sprites.draw(self.screen)
-            text()
+            self.text('white', 'Цель: добраться до лифта', (700, 400))
             pygame.display.flip()
             self.clock.tick(FPS // 10)
 
@@ -297,6 +273,7 @@ class Main(Levels):
         first_time = True
         # win = False
         while self.running:
+            # if self.level.girl
             self.screen.fill((0, 0, 0))
             self.render()
             self.handle_events()
@@ -324,6 +301,9 @@ class Main(Levels):
                 self.camera.apply(first_plan_group, self.player)
                 self.level.applying(self.camera, self.player)
 
+        pygame.mixer.music.load('data/music/start.ogg')
+        pygame.mixer.music.play(-1)
+        pygame.mouse.set_visible(True)
         if dead:
             self.death()
 
@@ -349,6 +329,7 @@ class Main(Levels):
                 self.screen.fill((255, 255, 255), ((randrange(120, 920), randrange(80, 620)), (5, 5)))
             groups.all_sprites.draw(self.screen)
             groups.all_sprites.update()
+            self.text('purple', 'Колебаться - значит проиграть', (325, 435), 0)
             pygame.display.flip()
             self.clock.tick(FPS // 4)
 
@@ -369,8 +350,25 @@ class Main(Levels):
                 self.screen.fill((255, 255, 255), ((randrange(120, 920), randrange(80, 620)), (5, 5)))
             groups.all_sprites.draw(self.screen)
             groups.all_sprites.update()
+            self.text('purple', 'Надо поднять бокалы за прекрасную победу', (230, 435), 0)
             pygame.display.flip()
             self.clock.tick(FPS // 4)
+
+    def text(self, color='white', text="Тут могла бы быть ваша реклама", pos=(0, 0), zal=1):
+        intro_text = text
+        font = pygame.font.Font(None, 34)
+        if zal == 0:
+            string_rendered = font.render(intro_text, 1, pygame.Color('white'))
+        else:
+            string_rendered = font.render(intro_text, 1, pygame.Color(color))
+        intro_rect = string_rendered.get_rect()
+        text_w = string_rendered.get_width()
+        text_h = string_rendered.get_height()
+        intro_rect.y = pos[1]
+        intro_rect.x = pos[0]
+        pygame.draw.rect(self.screen, pygame.Color(color),
+                         (intro_rect.x - 10, intro_rect.y - 10, text_w + 20, text_h + 20), zal)
+        self.screen.blit(string_rendered, intro_rect)
 
 
 if __name__ == '__main__':

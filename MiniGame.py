@@ -116,7 +116,9 @@ class Fon(pygame.sprite.Sprite):
 
 
 class MiniGame:
-    def __init__(self, screen, player):
+    def __init__(self, screen, player, main):
+        self.main = main
+        self.first_time = True
         self.katana = False
         self.player = player
         self.screen = screen
@@ -146,6 +148,9 @@ class MiniGame:
         self.main_person.size -= 10
 
     def update(self):
+        if self.first_time:
+            self.music()
+            self.first_time = False
         x = y = 0
         print("self.girl.hp:\t", self.girl.hp, "Values.InstantHP\t", Values.InstantHP)
         if Values.InstantHP <= 0:
@@ -156,6 +161,7 @@ class MiniGame:
             self.status = DEFENSE
 
         if self.girl.hp <= 0:
+            self.main.level.girl.kill()
             self.status = WIN
 
         if self.status == ATTACK:
@@ -176,17 +182,23 @@ class MiniGame:
         self.AvailableGroup = self.groups_dict[self.status]
 
     def attack(self):
+        pygame.mouse.set_visible(False)
         self.zahler += 1
         self.main_person.update()
 
     def end(self):
+        pygame.mouse.set_visible(True)
         self.status = ATTACK
         self.player.moving = [False] * MOVING_LEN
         self.screen.fill((0, 0, 0))
         Values.MINIGAME = False
         Values.GIRL = False
+        self.first_time = True
+        pygame.mixer.music.load('data/music/club.ogg')
+        pygame.mixer.music.play(-1)
 
     def defense(self):
+        pygame.mouse.set_visible(True)
         self.handle_events()
         if self.button_pressed["Sp"] and self.katana:
             self.katana.stop = True
@@ -205,4 +217,8 @@ class MiniGame:
             pygame.draw.rect(self.screen, (255, 255, 255), (int(width * 0.1),
                                                             int(height * 0.7), int(width * 0.8), 50), 0)
             groups.MG_d = pygame.sprite.Group()
+
+    def music(self):
+        pygame.mixer.music.load('data/music/mus_boss1.ogg')
+        pygame.mixer.music.play(-1)
 
