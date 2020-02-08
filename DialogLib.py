@@ -11,6 +11,7 @@ class Dialog:
         self.progress = 0
         self.d = True
         self.font = pygame.font.Font(None, 20)
+        self.image = None
 
     def draw_dialog(self, text):
         my_value = self.clock.tick(self.fps)

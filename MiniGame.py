@@ -19,6 +19,7 @@ class Heart(pygame.sprite.Sprite):
         super().__init__(group)
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
         self.image = pygame.transform.scale(load_image("heartv2.0.png"), (30, 30))
+        self.size = 3000
         self.rect = self.image.get_rect()
         self.rect.x = width // 2
         self.rect.y = height // 2
@@ -75,6 +76,7 @@ class Katana(pygame.sprite.Sprite):
     def __init__(self, group):
         super().__init__(group)
         self.image = load_image("katana.png")
+        self.image = pygame.transform.flip(self.image, 1, 0)
         self.rect = self.image.get_rect()
         self.rect.x = width * 0.1
         self.sizeX = self.rect[0]
@@ -84,11 +86,13 @@ class Katana(pygame.sprite.Sprite):
 
     def update(self):
         if not self.stop:
-            print(self.rect.x)
+            print("self.rect.x:\t", self.rect.x)
             if self.rect.x >= 800:
                 self.vx = -30
+                self.image = pygame.transform.flip(self.image, 1, 0)
             elif self.rect.x <= -10:
                 self.vx = 30
+                self.image = pygame.transform.flip(self.image, 1, 0)
             self.rect.x += self.vx
 
 
@@ -117,31 +121,38 @@ class MiniGame:
         self.player = player
         self.screen = screen
         self.status = ATTACK
-        self.dialog = DialogLib.Dialog(self.screen, 1, FPS)
+        self.dialog = DialogLib.Dialog(self.screen, 10, FPS)
         self.girl = Girl(MG_d, "Girl/GirlSkeleton.png")
         self.Fon_A = Fon(MG_fon, "cityfon.png")
         self.zahler = 0
         self.x = self.y = 0
         self.fon = load_image("demon_fon.png")
         self.button_pressed = {"W": False, "A": False, "S": False, "D": False, "Sp": False}
-        self.groups_dict = {ATTACK: [MG_mp, MG_fon, MG_e], DEFENSE: [MG_d]}
+        self.groups_dict = {ATTACK: [MG_mp, MG_fon, MG_e], DEFENSE: [MG_d], INTRO: [MG_intro]}
         for i in range(30):
             Enemy(self.groups_dict[ATTACK][2])
         self.main_person = Heart(self.groups_dict[ATTACK])
 
         self.AvailableGroup = [self.groups_dict[self.status]]
+        self.first_attack = True
 
     def handle_events(self):
         if pygame.key.get_pressed()[32]:
             self.button_pressed["Sp"] = True
 
+    def introA(self):
+        s = self.main_person.size
+        self.screen.blit(pygame.transform.scale(self.main_person.image, (s, s)), ((width - s) // 2, (height - s) // 2))
+        self.main_person.size -= 10
+
     def update(self):
         x = y = 0
-        print(self.girl.hp, Values.InstantHP)
+        print("self.girl.hp:\t", self.girl.hp, "Values.InstantHP\t", Values.InstantHP)
         if Values.InstantHP <= 0:
             self.status = DEAD
 
-        if self.zahler >= 20:
+        elif self.zahler >= 100:
+            #self.first_attack = False
             self.status = DEFENSE
 
         if self.girl.hp <= 0:
@@ -151,6 +162,7 @@ class MiniGame:
             self.attack()
 
         elif self.status == DEFENSE:
+            self.button_pressed["Sp"] = False
             self.defense()
 
         elif self.status == WIN:
@@ -181,6 +193,7 @@ class MiniGame:
             self.katana.image = pygame.transform.scale(self.katana.image, (2, 4000))
             self.katana.rect[1] = 0
             self.girl.hp -= int((WIDTH // 2 - abs(WIDTH // 2 - self.katana.rect.x)) / (WIDTH // 2) * E_HP) + 2
+            print("self.girl.hp in defense\t", self.girl.hp)
             self.zahler = 0
             self.groups_dict[ATTACK][2] = pygame.sprite.Group()
             for i in range(20):

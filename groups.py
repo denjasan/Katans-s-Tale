@@ -14,3 +14,4 @@ noize_group = pygame.sprite.Group()
 
 MG_mp, MG_e, MG_d, MG_fon = pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group()
 MG_katana, MG_katana_fon, MG_katana_e = pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group()
+MG_intro = pygame.sprite.Group()
